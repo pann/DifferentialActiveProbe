@@ -1413,10 +1413,17 @@
 
         function renderHistoryItem(result, testId, index) {
             const test = getTestDef(testId);
+            const dut = result.dut || {};
+            const dutInfo = [
+                dut.revision ? `Rev: ${dut.revision}` : '',
+                dut.serial ? `S/N: ${dut.serial}` : '',
+                dut.tester ? `Tester: ${dut.tester}` : ''
+            ].filter(x => x).join(' | ');
+
             return `
                 <div class="history-item">
                     <div class="history-item-header">
-                        <span class="history-item-date">${formatDate(result.timestamp)}</span>
+                        <span class="history-item-date">${formatDate(result.timestamp)}${dutInfo ? ` <span style="color: var(--text-muted); font-size: 0.85em;">(${dutInfo})</span>` : ''}</span>
                         <div class="history-item-actions">
                             <span class="history-item-status ${result.status}">${result.status.toUpperCase()}</span>
                             <button class="delete-btn" onclick="deleteResult('${testId}', ${index})" title="Delete this test run">×</button>
@@ -1528,7 +1535,12 @@
                 timestamp: new Date().toISOString(),
                 status,
                 values,
-                notes
+                notes,
+                dut: {
+                    serial: document.getElementById('dut-serial').value,
+                    tester: document.getElementById('dut-tester').value,
+                    revision: document.getElementById('dut-revision').value
+                }
             });
 
             saveData();
