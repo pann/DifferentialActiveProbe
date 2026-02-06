@@ -1018,7 +1018,7 @@
 		(at 36.83 60.96 180)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -1058,6 +1058,15 @@
 			)
 		)
 		(property "Description" "Positive input (pogo pin)"
+			(at 36.83 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 36.83 60.96 0)
 			(effects
 				(font
@@ -1122,6 +1131,15 @@
 			)
 		)
 		(property "Description" "Output BNC connector"
+			(at 255.27 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 255.27 77.47 0)
 			(effects
 				(font
@@ -1197,6 +1215,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 232.41 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "bff4e28b-1ae9-4bad-9e75-ad10ba854b74")
 		)
@@ -1264,6 +1291,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C17168"
+			(at 227.33 77.47 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "615721e2-2f9d-4284-8c3e-568bce81f21d")
 		)
@@ -1284,7 +1320,7 @@
 		(at 219.71 72.39 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "c1ac1797-2966-4458-a98d-0bd77628f21d")
@@ -1324,6 +1360,15 @@
 			)
 		)
 		(property "Description" "Test point - Output"
+			(at 219.71 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 219.71 72.39 0)
 			(effects
 				(font
@@ -1389,6 +1434,15 @@
 		)
 		(property "Description" "Output termination"
 			(at 212.09 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C227387"
+			(at 212.09 77.47 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1482,7 +1536,7 @@
 		(at 36.83 106.68 180)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -1530,6 +1584,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 36.83 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "84680b74-6f9c-4f3d-afb7-a346fa3dc5e5")
 		)
@@ -1547,7 +1610,7 @@
 		(at 246.38 72.39 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "f619441c-62e7-443e-87d8-eb85da690ce9")
@@ -1587,6 +1650,15 @@
 			)
 		)
 		(property "Description" "Test point - Output"
+			(at 246.38 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 246.38 72.39 0)
 			(effects
 				(font

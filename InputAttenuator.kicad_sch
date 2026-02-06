@@ -702,7 +702,7 @@
 		(uuid "63b9c21f-69ca-406d-a66c-89ebaa1c54e1")
 	)
 	(junction
-		(at 111.76 90.17)
+		(at 102.87 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9311abb1-938c-498d-bcdd-65bbbd86d9ec")
@@ -714,7 +714,7 @@
 		(uuid "b5441533-c7a7-4a0c-b0ab-b48c46b56f8b")
 	)
 	(junction
-		(at 105.41 90.17)
+		(at 96.52 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dde2a62e-ad08-44c5-9949-09edb9179e23")
@@ -741,7 +741,7 @@
 	)
 	(wire
 		(pts
-			(xy 85.09 90.17) (xy 105.41 90.17)
+			(xy 76.2 90.17) (xy 96.52 90.17)
 		)
 		(stroke
 			(width 0)
@@ -751,7 +751,7 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 90.17) (xy 105.41 97.79)
+			(xy 96.52 90.17) (xy 96.52 97.79)
 		)
 		(stroke
 			(width 0)
@@ -821,7 +821,7 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 90.17) (xy 111.76 90.17)
+			(xy 96.52 90.17) (xy 102.87 90.17)
 		)
 		(stroke
 			(width 0)
@@ -838,6 +838,16 @@
 			(type default)
 		)
 		(uuid "69bc2520-a1a1-4ce5-bc36-aee66202c61b")
+	)
+	(wire
+		(pts
+			(xy 114.3 90.17) (xy 118.11 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "791b3bac-a0c3-4551-af67-8a25ba3a4bf1")
 	)
 	(wire
 		(pts
@@ -871,7 +881,7 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 90.17) (xy 118.11 90.17)
+			(xy 102.87 90.17) (xy 106.68 90.17)
 		)
 		(stroke
 			(width 0)
@@ -881,7 +891,7 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 97.79) (xy 118.11 97.79)
+			(xy 96.52 97.79) (xy 118.11 97.79)
 		)
 		(stroke
 			(width 0)
@@ -941,7 +951,7 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 86.36) (xy 111.76 90.17)
+			(xy 102.87 86.36) (xy 102.87 90.17)
 		)
 		(stroke
 			(width 0)
@@ -962,7 +972,7 @@
 	)
 	(hierarchical_label "In"
 		(shape input)
-		(at 85.09 90.17 180)
+		(at 76.2 90.17 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -973,15 +983,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 111.76 86.36 0)
+		(at 102.87 86.36 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "0f6ac4b3-a5f9-4c09-b712-a2a4a9581372")
 		(property "Reference" "TP3"
-			(at 111.76 81.36 0)
+			(at 102.87 81.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -989,7 +999,7 @@
 			)
 		)
 		(property "Value" "TP"
-			(at 113.538 85.344 0)
+			(at 104.648 85.344 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -998,7 +1008,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 111.76 93.36 0)
+			(at 102.87 93.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1007,7 +1017,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 111.76 86.36 0)
+			(at 102.87 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1016,7 +1026,16 @@
 			)
 		)
 		(property "Description" "Test point - Input positive"
-			(at 111.76 86.36 0)
+			(at 102.87 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
+			(at 102.87 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1095,6 +1114,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2827694"
+			(at 167.64 97.79 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e96a0de6-192c-42f7-a993-644a3a5bb7b9")
 		)
@@ -1122,10 +1150,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "3a1c0828-3f95-4115-afcc-6ace3a745cb8")
 		(property "Reference" "C5"
-			(at 121.92 90.17 90)
+			(at 121.666 94.234 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1133,7 +1160,7 @@
 			)
 		)
 		(property "Value" "0.5-2pF"
-			(at 121.92 92.71 90)
+			(at 121.666 101.6 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1169,6 +1196,15 @@
 		)
 		(property "Type" "NP0/C0G"
 			(at 121.92 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C22468120"
+			(at 121.92 97.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1213,7 +1249,7 @@
 				)
 			)
 		)
-		(property "Value" "9M"
+		(property "Value" "3M9"
 			(at 121.92 86.36 90)
 			(effects
 				(font
@@ -1259,6 +1295,15 @@
 		)
 		(property "Type" "Thin film"
 			(at 121.92 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C423039"
+			(at 121.92 90.17 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1338,6 +1383,15 @@
 			)
 		)
 		(property "Type" "NP0/C0G"
+			(at 143.51 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C22468120"
 			(at 143.51 107.95 0)
 			(effects
 				(font
@@ -1427,6 +1481,15 @@
 			)
 		)
 		(property "Type" "Thin film"
+			(at 137.16 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C4165581"
 			(at 137.16 107.95 0)
 			(effects
 				(font
@@ -1595,11 +1658,110 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 110.49 90.17 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "951717bd-317a-4500-b55a-917b25897443")
+		(property "Reference" "R7"
+			(at 110.49 83.82 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "5M1"
+			(at 110.49 86.36 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+			(at 117.49 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 110.49 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Input attenuator - positive channel"
+			(at 110.49 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Tolerance" "0.1%"
+			(at 110.49 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Type" "Thin film"
+			(at 110.49 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C13320"
+			(at 110.49 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6fc4e6c7-af2c-474d-a85f-617b98e4524e")
+		)
+		(pin "2"
+			(uuid "a6b011d2-73c9-40a7-93d0-d07f13a6e5ad")
+		)
+		(instances
+			(project "active-diff"
+				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/50c10b95-8dc6-4894-a9d4-6edbe8eb0a19"
+					(reference "R16")
+					(unit 1)
+				)
+				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/6d95b8ad-c228-4248-8435-ba4ae435dc6d"
+					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 179.07 90.17 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "f3d4e5ba-e1f7-4bfb-bcd3-c44a1afeb8b7")
@@ -1639,6 +1801,15 @@
 			)
 		)
 		(property "Description" "Test point - Input positive"
+			(at 179.07 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 179.07 90.17 0)
 			(effects
 				(font

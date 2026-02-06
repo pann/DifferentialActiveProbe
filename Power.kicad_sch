@@ -6087,6 +6087,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2135"
+			(at 67.31 27.94 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "6e9e0364-4227-4ff7-b554-267d12efb62d")
 		)
@@ -6097,6 +6106,12 @@
 			(uuid "79041e95-3ec1-487d-98b1-4f7a5757d95b")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "D1")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "D3")
@@ -6165,7 +6180,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
@@ -6235,6 +6250,12 @@
 			(uuid "3f90cd26-1770-4651-8e7a-62ad78924f5e")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR011")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR035")
@@ -6316,6 +6337,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C296720"
+			(at 250.19 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "622eed3a-bdc6-4fb9-a2ba-80a42d752657")
 		)
@@ -6325,7 +6355,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "C?")
+					(reference "C13")
 					(unit 1)
 				)
 			)
@@ -6411,6 +6441,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2135"
+			(at 341.63 50.8 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e40c5e9b-5922-4e29-bea6-27b52e114ac1")
 		)
@@ -6423,7 +6462,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "D?")
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -6500,6 +6539,15 @@
 			)
 		)
 		(property "Dielectric" "X7R"
+			(at 179.07 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C15195"
 			(at 179.07 184.15 0)
 			(effects
 				(font
@@ -6587,6 +6635,12 @@
 			(uuid "76a71645-6907-4726-af24-842d12d09862")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR020")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR06")
@@ -6653,6 +6707,12 @@
 			(uuid "db6d6e05-e07a-4b2a-81c3-02010ba814d1")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR014")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR038")
@@ -6734,6 +6794,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C60474"
+			(at 166.37 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "dcd23f44-b04c-4194-b972-4cbca2d765a5")
 		)
@@ -6760,7 +6829,7 @@
 		(at 77.47 175.26 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -6809,10 +6878,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 77.47 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "3455a801-77b9-49ff-a274-854b04496ba9")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP1")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP20")
@@ -6894,6 +6978,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C237435"
+			(at 325.12 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "2b08c4ee-67ec-4d0b-9218-b1f4d2b83e51")
 		)
@@ -6903,7 +6996,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "C?")
+					(reference "C15")
 					(unit 1)
 				)
 			)
@@ -6920,7 +7013,7 @@
 		(at 156.21 109.22 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -6969,10 +7062,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 156.21 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "577b9082-e650-4aa5-9787-9fce68de21cf")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP4")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP12")
@@ -7054,6 +7162,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C25905 "
+			(at 88.9 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "6a313538-71cb-4426-9bd2-3506673651ec")
 		)
@@ -7063,7 +7180,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -7148,6 +7265,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C25741"
+			(at 316.23 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b62938cd-040a-441a-979e-90e161677f50")
 		)
@@ -7157,7 +7283,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -7229,7 +7355,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -7299,6 +7425,12 @@
 			(uuid "55bfc125-70a1-4c05-a892-dcc22ef85e26")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR013")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR036")
@@ -7449,6 +7581,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C11702"
+			(at 212.09 60.96 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "afa5dc0a-50a5-49ff-aa74-24998bd185e7")
 		)
@@ -7458,7 +7599,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -7528,6 +7669,12 @@
 			(uuid "b6b82e29-b564-4e89-a9f0-4fd67c7b3ae0")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR07")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR033")
@@ -7609,6 +7756,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C11702"
+			(at 369.57 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "f0efb906-52aa-4685-aaca-b276a316793a")
 		)
@@ -7618,7 +7774,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -7635,7 +7791,7 @@
 		(at 139.7 40.64 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -7684,10 +7840,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 139.7 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "cd4479c0-da1c-4b4b-a418-81e7bfc8bbef")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP3")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP9")
@@ -7756,7 +7927,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR019")
 					(unit 1)
 				)
 			)
@@ -7828,7 +7999,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
@@ -7904,6 +8075,15 @@
 		)
 		(property "MPN" "ADP7182ARDZ-5.0-R7"
 			(at 154.432 188.722 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C514357"
+			(at 134.62 182.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8003,8 +8183,17 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "OS102011MA1QN1"
+		(property "MPN" "PCM12SMTR"
 			(at 343.154 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C221841"
+			(at 358.14 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8036,7 +8225,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "SW?")
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -8118,6 +8307,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C136233"
+			(at 298.45 25.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "54492f21-3e25-4f87-bee3-6c1376dcba5a")
 		)
@@ -8127,7 +8325,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "L?")
+					(reference "L1")
 					(unit 1)
 				)
 			)
@@ -8199,7 +8397,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -8275,6 +8473,15 @@
 			)
 		)
 		(property "MPN" "S2B-PH-K-S"
+			(at 320.04 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C173752 "
 			(at 320.04 74.93 0)
 			(effects
 				(font
@@ -8377,6 +8584,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C25905 "
+			(at 97.79 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "02fd6d39-6d15-48cf-acf3-a347dcdcb232")
 		)
@@ -8386,7 +8602,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -8469,6 +8685,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C165948"
+			(at 46.99 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "A1"
 			(uuid "af479597-e4fb-4009-97cb-6bf046c565c7")
 		)
@@ -8517,7 +8742,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "J?")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -8599,6 +8824,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C15421"
+			(at 298.45 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b0989719-915a-4556-b874-f12a1d8be313")
 		)
@@ -8620,7 +8854,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "U?")
+					(reference "U6")
 					(unit 1)
 				)
 			)
@@ -8637,7 +8871,7 @@
 		(at 383.54 50.8 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -8686,10 +8920,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 383.54 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "be0a78d9-5e01-4db5-a0c4-acab559557d5")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP12")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP18")
@@ -8756,6 +9005,12 @@
 			(uuid "3246f552-989d-4fa3-9b89-4f4492b89e01")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR08")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR034")
@@ -8769,7 +9024,7 @@
 		(at 172.72 41.91 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -8818,10 +9073,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 172.72 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e2defab5-58be-449a-854c-978bc77ded26")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP7")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP11")
@@ -8835,7 +9105,7 @@
 		(at 168.91 109.22 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -8884,10 +9154,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 168.91 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9d11ef03-1f4c-4976-b651-a1c9722cd410")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP6")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP14")
@@ -8959,6 +9244,15 @@
 		)
 		(property "MPN" "TPS60403DBVR"
 			(at 75.184 179.324 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C11338"
+			(at 58.42 186.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9056,7 +9350,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -9073,7 +9367,7 @@
 		(at 172.72 175.26 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -9122,10 +9416,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 172.72 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7ece8f08-5e16-4f04-88e9-bbe00d415edb")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP8")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP19")
@@ -9204,6 +9513,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C60474"
+			(at 175.26 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9d54ee7c-4d39-4f98-a351-92e3a8502ef3")
 		)
@@ -9213,7 +9531,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "C?")
+					(reference "C12")
 					(unit 1)
 				)
 			)
@@ -9230,7 +9548,7 @@
 		(at 349.25 50.8 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -9279,10 +9597,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 349.25 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "72a9f45e-3624-4846-aa7b-6b8c66d1f8f6")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP11")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP17")
@@ -9364,6 +9697,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C173752 "
+			(at 158.75 25.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "df7622bc-7bbe-4d73-86b4-0a088e508547")
 		)
@@ -9373,7 +9715,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "J?")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -9450,6 +9792,15 @@
 			)
 		)
 		(property "Dielectric" "X7R"
+			(at 59.69 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C60474"
 			(at 59.69 123.19 0)
 			(effects
 				(font
@@ -9555,6 +9906,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2830320"
+			(at 219.71 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0f326ff0-9e74-4632-936b-6ebe69e5ebe5")
 		)
@@ -9576,7 +9936,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "Q?")
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -9664,6 +10024,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2830320"
+			(at 205.74 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0f326ff0-9e74-4632-936b-6ebe69e5ebe6")
 		)
@@ -9685,7 +10054,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "Q?")
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -9770,6 +10139,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C237435"
+			(at 154.94 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c9d4998c-2467-4824-9184-14ac8b497295")
 		)
@@ -9777,6 +10155,12 @@
 			(uuid "af32eee8-117a-4233-8c09-8c237790f6ce")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "C9")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "C12")
@@ -9850,6 +10234,15 @@
 			)
 		)
 		(property "Dielectric" "X7R"
+			(at 107.95 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C237435"
 			(at 107.95 119.38 0)
 			(effects
 				(font
@@ -9950,6 +10343,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2295"
+			(at 123.19 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e77deca0-0f55-4107-b164-68c3845c6245")
 		)
@@ -9959,7 +10361,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "LED?")
+					(reference "LED1")
 					(unit 1)
 				)
 			)
@@ -10044,6 +10446,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C4109"
+			(at 127 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "261bd2f4-d5ed-443c-b5d1-51472bde77b7")
 		)
@@ -10053,7 +10464,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -10136,6 +10547,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C11702"
+			(at 100.33 26.67 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "ae13b837-de0b-4e61-9462-013739feaabf")
 		)
@@ -10145,7 +10565,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -10230,6 +10650,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C237435"
+			(at 262.89 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "478f5ea0-8b45-4cd0-8a4d-5135aaebd2d8")
 		)
@@ -10239,7 +10668,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "C?")
+					(reference "C14")
 					(unit 1)
 				)
 			)
@@ -10316,6 +10745,15 @@
 			)
 		)
 		(property "Dielectric" "X7R"
+			(at 31.75 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C59782"
 			(at 31.75 193.04 0)
 			(effects
 				(font
@@ -10415,6 +10853,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C25077"
+			(at 168.91 50.8 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "1726c32c-6cfc-4a06-a211-c76c45009c32")
 		)
@@ -10424,7 +10871,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -10441,7 +10888,7 @@
 		(at 336.55 74.93 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -10490,10 +10937,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 336.55 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "51fa822e-4be6-4c88-9bd6-99c0fc88cec7")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP9")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP16")
@@ -10507,7 +10969,7 @@
 		(at 85.09 26.67 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -10556,10 +11018,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 85.09 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c5e9a8a4-c1b1-46d3-85ab-9a68e9266ea7")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP2")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP10")
@@ -10573,7 +11050,7 @@
 		(at 162.56 109.22 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -10622,10 +11099,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 162.56 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "eed99ea0-15a8-4bd2-bd9e-5dc575f89177")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP5")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP13")
@@ -10707,6 +11199,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C26083"
+			(at 316.23 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "23f9c2b4-e641-4228-9739-69152752b9c4")
 		)
@@ -10716,7 +11217,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "R?")
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -10786,6 +11287,12 @@
 			(uuid "9dc04595-21ca-4250-8a67-f58f039f4c4b")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR05")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR032")
@@ -10799,7 +11306,7 @@
 		(at 341.63 36.83 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -10848,10 +11355,25 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" ""
+			(at 341.63 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "16220112-ad0b-4557-b70f-c6ae74d979c2")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "TP10")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "TP15")
@@ -10923,6 +11445,15 @@
 		)
 		(property "MPN" "ADP7142AUJZ-5.0-R7"
 			(at 96.266 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C659367"
+			(at 82.55 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11031,6 +11562,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C59782"
+			(at 58.42 172.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "3a91f47d-ae66-4d29-89a4-228b288bb7fb")
 		)
@@ -11038,6 +11578,12 @@
 			(uuid "b70e39a4-523c-4c66-b0b0-fe7f90df01ea")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "C6")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "C11")
@@ -11106,7 +11652,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -11263,6 +11809,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C59782"
+			(at 45.72 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "30434163-f315-4afd-8ed0-634d417e96db")
 		)
@@ -11349,6 +11904,15 @@
 			)
 		)
 		(property "Dielectric" "X7R"
+			(at 114.3 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C59782"
 			(at 114.3 187.96 0)
 			(effects
 				(font
@@ -11448,6 +12012,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2297"
+			(at 369.57 66.04 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "15c5d313-8b2e-409e-97e5-5d6517f37e4e")
 		)
@@ -11457,7 +12030,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "LED?")
+					(reference "LED2")
 					(unit 1)
 				)
 			)
@@ -11599,6 +12172,12 @@
 			(uuid "7c505b69-fa39-47dd-bdf1-6baacbd51f19")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR016")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR037")
@@ -11672,6 +12251,15 @@
 			)
 		)
 		(property "Dielectric" "X7R"
+			(at 119.38 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C60474"
 			(at 119.38 119.38 0)
 			(effects
 				(font
@@ -11829,6 +12417,12 @@
 			(uuid "b9983701-5233-4a7f-82de-45e68d06d6c1")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "#PWR015")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "#PWR031")
@@ -11907,6 +12501,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C2927799"
+			(at 187.96 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "563c8950-e615-4143-b1b7-6b30cf75dc18")
 		)
@@ -11928,7 +12531,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "U?")
+					(reference "U5")
 					(unit 1)
 				)
 			)
@@ -12010,6 +12613,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C424093"
+			(at 109.22 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "313ef0bd-590d-4ba0-a5be-6a223f7fb1ae")
 		)
@@ -12028,7 +12640,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "U?")
+					(reference "U4")
 					(unit 1)
 				)
 			)
@@ -12113,6 +12725,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C59782"
+			(at 77.47 191.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d1fbb317-867d-457e-91ec-d84ce4c957d7")
 		)
@@ -12120,6 +12741,12 @@
 			(uuid "d18b2e44-69e9-4b30-a22b-e824b3a0503a")
 		)
 		(instances
+			(project "Power"
+				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
+					(reference "C7")
+					(unit 1)
+				)
+			)
 			(project "active-diff"
 				(path "/f9dd9bc6-979c-4d28-bd04-976faf1f4f50/58f8d639-e2ec-4a0f-b31b-90263fc4a403"
 					(reference "C8")
@@ -12188,7 +12815,7 @@
 		(instances
 			(project "Power"
 				(path "/47b680ef-d66b-4231-a620-857dd4682ca5"
-					(reference "#PWR?")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)

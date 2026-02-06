@@ -1301,7 +1301,7 @@
 		(at 116.84 78.74 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "23af4741-07fa-4dd8-abf4-bd7df92b7a2e")
@@ -1341,6 +1341,15 @@
 			)
 		)
 		(property "Description" "Test point - Input positive"
+			(at 116.84 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 116.84 78.74 0)
 			(effects
 				(font
@@ -1415,6 +1424,15 @@
 		)
 		(property "Tolerance" "0.1%"
 			(at 124.46 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C25744"
+			(at 124.46 82.55 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1563,6 +1581,15 @@
 			)
 		)
 		(property "Voltage" "16V"
+			(at 128.27 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C60474"
 			(at 128.27 133.35 0)
 			(effects
 				(font
@@ -1980,6 +2007,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C60474"
+			(at 140.97 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "354641b2-9f09-4732-8dd3-cc227b18656e")
 		)
@@ -2056,6 +2092,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB#" "C11702"
+			(at 153.67 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "01067407-ff70-45e2-842a-b2c22b2347ac")
 		)
@@ -2076,7 +2121,7 @@
 		(at 156.21 93.98 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "d9bb404d-01b9-4929-af18-4c969d851fcd")
@@ -2116,6 +2161,15 @@
 			)
 		)
 		(property "Description" "Test point - Input positive"
+			(at 156.21 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
 			(at 156.21 93.98 0)
 			(effects
 				(font
@@ -2183,6 +2237,15 @@
 			)
 		)
 		(property "Description" "Low Cost 270 MHz Differential Receiver Amplifier, SOIC-8/MSOP-8"
+			(at 132.08 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" "C41661"
 			(at 132.08 93.98 0)
 			(effects
 				(font
@@ -2278,6 +2341,15 @@
 		)
 		(property "Tolerance" "0.1%"
 			(at 144.78 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB#" ""
+			(at 144.78 101.6 90)
 			(effects
 				(font
 					(size 1.27 1.27)
