@@ -87,10 +87,9 @@ The project uses a custom symbol library `differential_probe_symbols.kicad_sym` 
 ### Schematic Hierarchy (DifferentialActiveProbe/)
 
 The main project uses hierarchical schematics:
-- `active-diff.kicad_sch` - Top-level schematic
-- `InputAttenuator.kicad_sch` - 10:1 input attenuator with TVS protection
-- `buffer.kicad_sch` - AD8065 unity-gain buffer amplifiers
-- `DiffAmp.kicad_sch` - LMH6552 differential amplifier stage
+- `active-diff.kicad_sch` - Top-level schematic with output stage
+- `InputAttenuator.kicad_sch` - 10:1 input attenuator with TVS protection (×2 instances)
+- `DiffAmp.kicad_sch` - AD8130 differential receiver amplifier
 - `Power.kicad_sch` - Dual ±5V power supply module
 
 ### Supported Libraries in Converter
@@ -107,8 +106,8 @@ The converter maps these library names to KiCad symbol files:
 - Input: ±50V differential, ±10V common mode
 - Attenuation: 10:1
 - Input impedance: 10MΩ
-- Bandwidth: DC to 200MHz
-- Uses AD8065 buffer amplifiers and LMH6552 differential amplifier
+- Bandwidth: DC to 270MHz
+- Uses AD8130 270MHz differential receiver amplifier (single IC replaces AD8065 buffers + LMH6552)
 
 ### TVS Protection Circuit
 Uses **PESD5V0S1BA** bidirectional TVS diodes (SOD-323 package):
@@ -121,7 +120,7 @@ Uses **PESD5V0S1BA** bidirectional TVS diodes (SOD-323 package):
 - Normal operation: TVS does not conduct (|±5V| < 6V breakdown)
 - Fault/ESD: TVS clamps to GND when |signal| > 6V
 
-This protects the AD8065 buffer inputs while allowing full ±5V signal swing.
+This protects the AD8130 inputs while allowing full ±5V signal swing.
 
 ### Power Supply Architecture
 - Dual ±5V rails from 9V battery or single-cell LiPo with USB-C charging

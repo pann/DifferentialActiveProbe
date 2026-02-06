@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Active Probe - Documentation</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #eaeaea;
+            --text-muted: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-color);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .specs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .spec-item {
+            background: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .spec-item strong {
+            color: var(--highlight);
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .category {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--highlight);
+        }
+
+        .category h2 {
+            color: var(--highlight);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--highlight);
+            border-radius: 50%;
+        }
+
+        .doc-list {
+            list-style: none;
+        }
+
+        .doc-list li {
+            margin-bottom: 1rem;
+        }
+
+        .doc-list a {
+            display: block;
+            padding: 0.75rem 1rem;
+            background: var(--accent);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .doc-list a:hover {
+            background: var(--highlight);
+            transform: translateX(5px);
+        }
+
+        .doc-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .doc-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .doc-list a:hover .doc-desc {
+            color: var(--text);
+        }
+
+        .file-type {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            background: var(--bg-color);
+            border-radius: 3px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--accent);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--highlight);
+            text-decoration: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .status-complete {
+            background: #2ecc71;
+            color: #000;
+        }
+
+        .status-rev1 {
+            background: #3498db;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .specs {
+                gap: 0.5rem;
+            }
+
+            .spec-item {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Differential Active Probe</h1>
+            <p class="subtitle">200MHz Differential Probe with AD8130 and Dual ±5V Power Supply</p>
+            <div class="specs">
+                <span class="spec-item"><strong>Bandwidth:</strong> DC - 270MHz</span>
+                <span class="spec-item"><strong>Input:</strong> ±50V differential</span>
+                <span class="spec-item"><strong>Attenuation:</strong> 10:1</span>
+                <span class="spec-item"><strong>Impedance:</strong> 10MΩ</span>
+                <span class="spec-item"><strong>CMRR:</strong> 70dB @ 10MHz</span>
+            </div>
+        </header>
+
+        <div class="categories">
+            <section class="category">
+                <h2>Design Input</h2>
+                <ul class="doc-list">
+                    <li>
+                        <a href="Differential_Probe_Revised_AD8130.md">
+                            <div class="doc-title">
+                                AD8130 Design Specification
+                                <span class="file-type">MD</span>
+                                <span class="status status-complete">Current</span>
+                            </div>
+                            <div class="doc-desc">Complete circuit design using AD8130 differential receiver. Includes schematics, component values, and design rationale.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Differential_Probe_Power_Supply_Design.md">
+                            <div class="doc-title">
+                                Power Supply Design
+                                <span class="file-type">MD</span>
+                            </div>
+                            <div class="doc-desc">Dual ±5V power supply from 9V battery or LiPo with USB-C charging. Ultra-low noise LDOs (9µVrms).</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../CLAUDE.md">
+                            <div class="doc-title">
+                                Project Overview (CLAUDE.md)
+                                <span class="file-type">MD</span>
+                            </div>
+                            <div class="doc-desc">Project structure, build commands, schematic hierarchy, and design notes for Claude Code.</div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category">
+                <h2>Component Selection</h2>
+                <ul class="doc-list">
+                    <li>
+                        <a href="Component_Selection_Summary.md">
+                            <div class="doc-title">
+                                Component Selection Analysis
+                                <span class="file-type">MD</span>
+                            </div>
+                            <div class="doc-desc">Detailed trade-off analysis for all power supply components. Includes alternatives considered and reasoning.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../BOM-claude.md">
+                            <div class="doc-title">
+                                Bill of Materials
+                                <span class="file-type">MD</span>
+                                <span class="status status-rev1">R1</span>
+                            </div>
+                            <div class="doc-desc">Complete BOM with JLCPCB part numbers. ~$24.50 for SMT assembly, precision resistors from DigiKey.</div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category">
+                <h2>Datasheets</h2>
+                <ul class="doc-list">
+                    <li>
+                        <a href="AD8129_8130.pdf">
+                            <div class="doc-title">
+                                AD8130 Datasheet
+                                <span class="file-type">PDF</span>
+                            </div>
+                            <div class="doc-desc">Analog Devices AD8129/AD8130 differential receiver amplifier. 270MHz bandwidth, 70dB CMRR @ 10MHz.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="VLS3012ET-100M.pdf">
+                            <div class="doc-title">
+                                VLS3012ET Inductor
+                                <span class="file-type">PDF</span>
+                            </div>
+                            <div class="doc-desc">TDK power inductor for boost converter. 2.2µH, 2.3A saturation, 85mΩ DCR.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pcm.pdf">
+                            <div class="doc-title">
+                                PCM12SMTR Switch
+                                <span class="file-type">PDF</span>
+                            </div>
+                            <div class="doc-desc">C&K SPDT slide switch for power on/off control.</div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category">
+                <h2>Calibration & Test</h2>
+                <ul class="doc-list">
+                    <li>
+                        <a href="tuning_step_response_method.png">
+                            <div class="doc-title">
+                                Step Response Tuning
+                                <span class="file-type">PNG</span>
+                            </div>
+                            <div class="doc-desc">Calibration method using step response for compensation adjustment.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tuning_frequency_method.png">
+                            <div class="doc-title">
+                                Frequency Response Tuning
+                                <span class="file-type">PNG</span>
+                            </div>
+                            <div class="doc-desc">Frequency sweep method for bandwidth calibration.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tuning_practical_guide.png">
+                            <div class="doc-title">
+                                Practical Tuning Guide
+                                <span class="file-type">PNG</span>
+                            </div>
+                            <div class="doc-desc">Step-by-step practical guide for probe calibration.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tuning_scope_loading.png">
+                            <div class="doc-title">
+                                Scope Loading Effects
+                                <span class="file-type">PNG</span>
+                            </div>
+                            <div class="doc-desc">Understanding oscilloscope input loading and compensation.</div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category">
+                <h2>Manufacturing</h2>
+                <ul class="doc-list">
+                    <li>
+                        <a href="../BOM-claude.csv">
+                            <div class="doc-title">
+                                BOM Export (CSV)
+                                <span class="file-type">CSV</span>
+                            </div>
+                            <div class="doc-desc">Machine-readable BOM for JLCPCB assembly upload.</div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category">
+                <h2>KiCad Project</h2>
+                <ul class="doc-list">
+                    <li>
+                        <a href="../active-diff.kicad_sch">
+                            <div class="doc-title">
+                                Top-Level Schematic
+                                <span class="file-type">SCH</span>
+                            </div>
+                            <div class="doc-desc">Main schematic with hierarchical sheet references and output stage.</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../active-diff.kicad_pcb">
+                            <div class="doc-title">
+                                PCB Layout
+                                <span class="file-type">PCB</span>
+                                <span class="status status-rev1">R1</span>
+                            </div>
+                            <div class="doc-desc">4-layer PCB design. Sent to JLCPCB for fabrication.</div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <footer>
+            <p>Differential Active Probe Project | KiCad 9 | <a href="https://github.com">View on GitHub</a></p>
+            <p style="margin-top: 0.5rem;">Last updated: February 2026 | Revision 1</p>
+        </footer>
+    </div>
+</body>
+</html>

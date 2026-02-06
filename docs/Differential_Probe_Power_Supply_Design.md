@@ -101,7 +101,7 @@ This power supply provides clean ±5V rails for the differential probe circuit, 
                     └─────────┬─────────┘
                               │
                     To Differential Probe
-                    (AD8065 buffers, LMH6552 diff amp)
+                    (AD8130 differential receiver)
 ```
 
 ---
@@ -650,12 +650,10 @@ Critical Layout Notes:
 
 | Circuit Block | Supply | Current (mA) | Notes |
 |---------------|--------|--------------|-------|
-| AD8065 (U1) | ±5V | 2.5 + 2.5 | Unity gain buffer |
-| AD8065 (U2) | ±5V | 2.5 + 2.5 | Unity gain buffer |
-| LMH6552 (U3) | ±5V | 5 + 5 | Differential amplifier |
+| AD8130 (U1) | ±5V | 4.5 + 4.5 | Differential receiver amplifier |
 | Decoupling/misc | ±5V | 5 + 5 | Leakage, bias currents |
-| **Total per rail** | | **15 + 15** | **Conservative estimate** |
-| **Design target** | | **50mA** | **3.3x margin** |
+| **Total per rail** | | **10 + 10** | **Conservative estimate** |
+| **Design target** | | **50mA** | **5x margin** |
 
 ### Supply Efficiency Chain
 
