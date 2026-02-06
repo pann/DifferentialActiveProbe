@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Probe - Test Runner</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #eaeaea;
+            --text-muted: #a0a0a0;
+            --pass: #2ecc71;
+            --fail: #e74c3c;
+            --pending: #f39c12;
+            --input-bg: #0a0a15;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-color);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--accent);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--highlight);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--accent);
+            color: var(--text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: var(--highlight);
+        }
+
+        button.primary {
+            background: var(--highlight);
+        }
+
+        .dut-info {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .dut-info label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .dut-info input {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .category {
+            margin-bottom: 1.5rem;
+        }
+
+        .category-header {
+            background: var(--accent);
+            padding: 0.75rem 1rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .category-header h2 {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-stats {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .stat-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .stat-pass { background: var(--pass); color: #000; }
+        .stat-fail { background: var(--fail); color: #fff; }
+        .stat-pending { background: var(--pending); color: #000; }
+
+        .category-tests {
+            background: var(--card-bg);
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+        }
+
+        .test-item {
+            border-bottom: 1px solid var(--accent);
+        }
+
+        .test-item:last-child {
+            border-bottom: none;
+        }
+
+        .test-header {
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .test-header:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .test-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .test-id {
+            font-weight: 600;
+            color: var(--highlight);
+            min-width: 2.5rem;
+        }
+
+        .test-name {
+            font-size: 0.9rem;
+        }
+
+        .test-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+
+        .status-indicator.pass { background: var(--pass); }
+        .status-indicator.fail { background: var(--fail); }
+        .status-indicator.pending { background: var(--pending); }
+
+        .last-run {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .expand-icon {
+            transition: transform 0.2s;
+            color: var(--text-muted);
+        }
+
+        .test-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .test-content {
+            display: none;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid var(--accent);
+        }
+
+        .test-item.expanded .test-content {
+            display: block;
+        }
+
+        .test-section {
+            margin-bottom: 1rem;
+        }
+
+        .test-section h4 {
+            font-size: 0.85rem;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+
+        .test-section p, .test-section ul, .test-section table {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .test-section ul {
+            margin-left: 1.5rem;
+        }
+
+        .test-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        .test-section th, .test-section td {
+            padding: 0.4rem 0.6rem;
+            text-align: left;
+            border: 1px solid var(--accent);
+        }
+
+        .test-section th {
+            background: var(--accent);
+            color: var(--text);
+        }
+
+        .run-test-form {
+            background: var(--accent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .run-test-form h4 {
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 0.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--bg-color);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .history-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--accent);
+        }
+
+        .history-section h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .history-list {
+            display: none;
+        }
+
+        .history-list.visible {
+            display: block;
+        }
+
+        .history-item {
+            background: var(--bg-color);
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item-date {
+            color: var(--text-muted);
+        }
+
+        .history-item-status {
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .history-item-status.pass { background: var(--pass); color: #000; }
+        .history-item-status.fail { background: var(--fail); color: #fff; }
+
+        .history-item-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .history-value {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-value-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .history-value-data {
+            color: var(--text);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.visible {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: var(--highlight);
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            height: 200px;
+            padding: 0.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            color: var(--text);
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .summary-bar {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .summary-stat {
+            text-align: center;
+        }
+
+        .summary-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .summary-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .summary-stat-value.pass { color: var(--pass); }
+        .summary-stat-value.fail { color: var(--fail); }
+        .summary-stat-value.pending { color: var(--pending); }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--bg-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pass), var(--highlight));
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .header-controls {
+                width: 100%;
+            }
+
+            .header-controls button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Differential Probe - Test Runner</h1>
+            <div class="header-controls">
+                <button onclick="exportData()">Export JSON</button>
+                <button onclick="showImportModal()">Import JSON</button>
+                <button onclick="clearAllData()" style="background: var(--fail);">Clear All</button>
+            </div>
+        </header>
+
+        <div class="dut-info">
+            <div>
+                <label>Serial Number</label>
+                <input type="text" id="dut-serial" placeholder="Enter serial number" onchange="saveDutInfo()">
+            </div>
+            <div>
+                <label>Tester Name</label>
+                <input type="text" id="dut-tester" placeholder="Enter tester name" onchange="saveDutInfo()">
+            </div>
+            <div>
+                <label>Test Date</label>
+                <input type="date" id="dut-date" onchange="saveDutInfo()">
+            </div>
+            <div>
+                <label>Build Revision</label>
+                <input type="text" id="dut-revision" placeholder="e.g., R1" onchange="saveDutInfo()">
+            </div>
+        </div>
+
+        <div class="summary-bar">
+            <div class="summary-stats">
+                <div class="summary-stat">
+                    <div class="summary-stat-value pass" id="total-pass">0</div>
+                    <div class="summary-stat-label">Passed</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value fail" id="total-fail">0</div>
+                    <div class="summary-stat-label">Failed</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value pending" id="total-pending">0</div>
+                    <div class="summary-stat-label">Pending</div>
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+                    Progress: <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="test-categories"></div>
+    </div>
+
+    <div class="modal" id="import-modal">
+        <div class="modal-content">
+            <h3>Import Test Data</h3>
+            <textarea id="import-data" placeholder="Paste JSON data here..."></textarea>
+            <div class="modal-actions">
+                <button onclick="hideImportModal()">Cancel</button>
+                <button class="primary" onclick="importData()">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test definitions
+        const testDefinitions = {
+            "A": {
+                name: "Power Supply",
+                tests: {
+                    "A1": {
+                        name: "Power-On from 9V Battery",
+                        objective: "Verify probe powers on correctly from 9V battery",
+                        setup: [
+                            "Connect fresh 9V alkaline battery",
+                            "Connect DMM to +5V test point (TP_VCC)",
+                            "Connect second DMM to -5V test point (TP_VEE)"
+                        ],
+                        procedure: [
+                            "Verify power LED is OFF with switch in OFF position",
+                            "Move switch to ON position",
+                            "Record +5V rail voltage",
+                            "Record -5V rail voltage",
+                            "Verify power LED illuminates GREEN"
+                        ],
+                        criteria: [
+                            { param: "+5V Rail", min: "4.95V", typ: "5.00V", max: "5.05V" },
+                            { param: "-5V Rail", min: "-5.05V", typ: "-5.00V", max: "-4.95V" },
+                            { param: "Power LED", min: "GREEN", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "v_pos", label: "+5V Rail (V)", type: "number", step: "0.001" },
+                            { id: "v_neg", label: "-5V Rail (V)", type: "number", step: "0.001" },
+                            { id: "led_status", label: "LED Status", type: "select", options: ["GREEN", "OFF", "Other"] }
+                        ]
+                    },
+                    "A2": {
+                        name: "Power-On from LiPo Battery",
+                        objective: "Verify probe powers on correctly from LiPo battery (no 9V)",
+                        setup: [
+                            "Disconnect 9V battery",
+                            "Connect charged LiPo battery",
+                            "Connect DMMs to +/-5V test points"
+                        ],
+                        procedure: [
+                            "Measure initial LiPo voltage",
+                            "Move switch to ON position",
+                            "Record +5V and -5V rail voltages",
+                            "Verify power LED illuminates"
+                        ],
+                        criteria: [
+                            { param: "+5V Rail", min: "4.90V", typ: "5.00V", max: "5.05V" },
+                            { param: "-5V Rail", min: "-5.05V", typ: "-5.00V", max: "-4.90V" }
+                        ],
+                        fields: [
+                            { id: "lipo_v", label: "LiPo Voltage (V)", type: "number", step: "0.01" },
+                            { id: "v_pos", label: "+5V Rail (V)", type: "number", step: "0.001" },
+                            { id: "v_neg", label: "-5V Rail (V)", type: "number", step: "0.001" }
+                        ]
+                    },
+                    "A3": {
+                        name: "Power Supply Noise",
+                        objective: "Verify ultra-low noise on power rails",
+                        setup: [
+                            "Power probe from 9V battery",
+                            "Set oscilloscope: AC coupling, 20MHz BW limit, 1mV/div",
+                            "Connect scope probe to +5V test point (short ground lead)"
+                        ],
+                        procedure: [
+                            "Measure +5V rail noise (peak-to-peak)",
+                            "Repeat for -5V rail",
+                            "Note any switching frequency components"
+                        ],
+                        criteria: [
+                            { param: "+5V Noise (p-p)", min: "", typ: "", max: "10mV" },
+                            { param: "-5V Noise (p-p)", min: "", typ: "", max: "10mV" }
+                        ],
+                        fields: [
+                            { id: "noise_pos", label: "+5V Noise (mV p-p)", type: "number", step: "0.1" },
+                            { id: "noise_neg", label: "-5V Noise (mV p-p)", type: "number", step: "0.1" },
+                            { id: "freq_note", label: "Dominant Frequency", type: "text" }
+                        ]
+                    },
+                    "A4": {
+                        name: "Supply Current",
+                        objective: "Verify quiescent and operating current draw",
+                        setup: [
+                            "Insert DMM (mA range) in series with 9V battery",
+                            "No input signal applied to probe"
+                        ],
+                        procedure: [
+                            "Record quiescent current (no signal, no load)",
+                            "Apply 1Vpp 1kHz differential signal, record current",
+                            "Calculate power consumption"
+                        ],
+                        criteria: [
+                            { param: "Quiescent Current", min: "", typ: "15mA", max: "30mA" },
+                            { param: "Operating Current", min: "", typ: "20mA", max: "50mA" }
+                        ],
+                        fields: [
+                            { id: "i_quiescent", label: "Quiescent (mA)", type: "number", step: "0.1" },
+                            { id: "i_operating", label: "Operating (mA)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "A5": {
+                        name: "LiPo Charging",
+                        objective: "Verify USB-C charging functionality",
+                        setup: [
+                            "Connect partially discharged LiPo (3.5-3.8V)",
+                            "Connect USB-C 5V power source",
+                            "Probe must be OFF"
+                        ],
+                        procedure: [
+                            "Record initial LiPo voltage",
+                            "Connect USB-C power",
+                            "Verify charging LED (RED)",
+                            "Measure charge current if possible",
+                            "Wait for complete, record final voltage"
+                        ],
+                        criteria: [
+                            { param: "Charge Current", min: "400mA", typ: "500mA", max: "550mA" },
+                            { param: "Final Voltage", min: "4.15V", typ: "4.20V", max: "4.25V" }
+                        ],
+                        fields: [
+                            { id: "v_initial", label: "Initial LiPo (V)", type: "number", step: "0.01" },
+                            { id: "i_charge", label: "Charge Current (mA)", type: "number", step: "1" },
+                            { id: "v_final", label: "Final LiPo (V)", type: "number", step: "0.01" },
+                            { id: "charge_time", label: "Charge Time (min)", type: "number", step: "1" }
+                        ]
+                    },
+                    "A6": {
+                        name: "Battery Switchover",
+                        objective: "Verify automatic switching between 9V and LiPo",
+                        setup: [
+                            "Connect both 9V battery and charged LiPo",
+                            "Monitor +5V rail with DMM",
+                            "Power ON the probe"
+                        ],
+                        procedure: [
+                            "Record +5V with both batteries",
+                            "Disconnect 9V while monitoring",
+                            "Verify no dropout",
+                            "Reconnect 9V, verify smooth transition"
+                        ],
+                        criteria: [
+                            { param: "Switchover", min: "", typ: "No dropout", max: "" },
+                            { param: "+5V stability", min: "", typ: "", max: "±50mV" }
+                        ],
+                        fields: [
+                            { id: "v_both", label: "+5V Both Batteries (V)", type: "number", step: "0.001" },
+                            { id: "v_lipo_only", label: "+5V LiPo Only (V)", type: "number", step: "0.001" },
+                            { id: "glitch", label: "Glitch Observed", type: "select", options: ["None", "Minor", "Significant"] }
+                        ]
+                    },
+                    "A7": {
+                        name: "Low Battery Operation",
+                        objective: "Verify operation down to minimum LiPo voltage",
+                        setup: [
+                            "Use adjustable supply to simulate LiPo",
+                            "Monitor +5V rail and input voltage"
+                        ],
+                        procedure: [
+                            "Starting from 4.2V, reduce in 0.1V steps",
+                            "Record +5V at each step",
+                            "Continue until shutdown or out of spec",
+                            "Record cutoff voltage"
+                        ],
+                        criteria: [
+                            { param: "+5V @ 3.7V input", min: "4.95V", typ: "5.00V", max: "5.05V" },
+                            { param: "+5V @ 3.3V input", min: "4.90V", typ: "", max: "5.05V" }
+                        ],
+                        fields: [
+                            { id: "v5_at_42", label: "+5V @ 4.2V in", type: "number", step: "0.001" },
+                            { id: "v5_at_37", label: "+5V @ 3.7V in", type: "number", step: "0.001" },
+                            { id: "v5_at_33", label: "+5V @ 3.3V in", type: "number", step: "0.001" },
+                            { id: "cutoff_v", label: "Cutoff Voltage (V)", type: "number", step: "0.01" }
+                        ]
+                    },
+                    "A8": {
+                        name: "9V Battery Range",
+                        objective: "Verify operation across 9V battery voltage range",
+                        setup: [
+                            "Use adjustable power supply instead of 9V battery",
+                            "Monitor +5V rail"
+                        ],
+                        procedure: [
+                            "Set supply to 9.0V, record +5V",
+                            "Reduce to 7.5V (depleted), record +5V",
+                            "Reduce to 6.0V (minimum), record +5V",
+                            "Increase to 9.5V, verify no damage"
+                        ],
+                        criteria: [
+                            { param: "+5V @ 9.0V in", min: "4.95V", typ: "5.00V", max: "5.05V" },
+                            { param: "+5V @ 6.0V in", min: "4.90V", typ: "", max: "5.05V" }
+                        ],
+                        fields: [
+                            { id: "v5_at_90", label: "+5V @ 9.0V in", type: "number", step: "0.001" },
+                            { id: "v5_at_75", label: "+5V @ 7.5V in", type: "number", step: "0.001" },
+                            { id: "v5_at_60", label: "+5V @ 6.0V in", type: "number", step: "0.001" }
+                        ]
+                    }
+                }
+            },
+            "B": {
+                name: "DC Performance",
+                tests: {
+                    "B1": {
+                        name: "DC Attenuation Ratio",
+                        objective: "Verify 10:1 attenuation ratio at DC",
+                        setup: [
+                            "Connect adjustable DC supply to probe inputs",
+                            "Connect DMM #1 to measure input differential",
+                            "Connect DMM #2 to probe output (BNC)"
+                        ],
+                        procedure: [
+                            "Apply +1.000V differential",
+                            "Record output voltage",
+                            "Repeat for +5V, +10V, -5V, -10V",
+                            "Calculate attenuation ratio"
+                        ],
+                        criteria: [
+                            { param: "Ratio @ 1V", min: "9.9:1", typ: "10.0:1", max: "10.1:1" },
+                            { param: "Ratio @ 10V", min: "9.9:1", typ: "10.0:1", max: "10.1:1" }
+                        ],
+                        fields: [
+                            { id: "out_1v", label: "Output @ 1V in (mV)", type: "number", step: "0.1" },
+                            { id: "out_5v", label: "Output @ 5V in (mV)", type: "number", step: "0.1" },
+                            { id: "out_10v", label: "Output @ 10V in (mV)", type: "number", step: "0.1" },
+                            { id: "ratio_avg", label: "Average Ratio", type: "number", step: "0.01" }
+                        ]
+                    },
+                    "B2": {
+                        name: "DC Offset",
+                        objective: "Measure DC offset with inputs shorted",
+                        setup: [
+                            "Short both inputs to probe ground",
+                            "Connect DMM to probe output"
+                        ],
+                        procedure: [
+                            "Allow probe to warm up 5 minutes",
+                            "Record output DC voltage",
+                            "Repeat after 15 minutes"
+                        ],
+                        criteria: [
+                            { param: "DC Offset", min: "", typ: "0mV", max: "±10mV" },
+                            { param: "Drift (15 min)", min: "", typ: "", max: "±2mV" }
+                        ],
+                        fields: [
+                            { id: "offset_5min", label: "Offset @ 5min (mV)", type: "number", step: "0.1" },
+                            { id: "offset_15min", label: "Offset @ 15min (mV)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "B3": {
+                        name: "Input Impedance",
+                        objective: "Verify 10MΩ input impedance",
+                        setup: [
+                            "Connect 1MΩ precision resistor in series with INPUT_POS",
+                            "Apply 10V DC through the resistor",
+                            "Measure voltage at INPUT_POS"
+                        ],
+                        procedure: [
+                            "Without probe: measure voltage (should be 10V)",
+                            "With probe: measure voltage at INPUT_POS",
+                            "Calculate input impedance"
+                        ],
+                        criteria: [
+                            { param: "Input Impedance", min: "9MΩ", typ: "10MΩ", max: "11MΩ" }
+                        ],
+                        fields: [
+                            { id: "v_measured", label: "V at INPUT_POS (V)", type: "number", step: "0.001" },
+                            { id: "r_input", label: "Calculated Rin (MΩ)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "B4": {
+                        name: "Maximum Input Voltage",
+                        objective: "Verify operation at maximum rated differential input",
+                        setup: [
+                            "Use two power supplies to create ±25V (50V diff)",
+                            "Connect through 100kΩ current-limiting resistors",
+                            "Monitor output on scope"
+                        ],
+                        procedure: [
+                            "Slowly increase differential from 0 to ±25V",
+                            "Verify output tracks correctly (±2.5V)",
+                            "Verify no clipping or distortion",
+                            "Verify probe survives"
+                        ],
+                        criteria: [
+                            { param: "+50V input", min: "", typ: "+5V output", max: "" },
+                            { param: "-50V input", min: "", typ: "-5V output", max: "" }
+                        ],
+                        fields: [
+                            { id: "out_pos50", label: "Output @ +50V in (V)", type: "number", step: "0.01" },
+                            { id: "out_neg50", label: "Output @ -50V in (V)", type: "number", step: "0.01" },
+                            { id: "clipping", label: "Clipping", type: "select", options: ["None", "Minor", "Significant"] }
+                        ]
+                    },
+                    "B5": {
+                        name: "Common Mode DC",
+                        objective: "Verify operation with common mode DC offset",
+                        setup: [
+                            "Apply common mode voltage to both inputs",
+                            "Apply small differential on top",
+                            "Monitor output"
+                        ],
+                        procedure: [
+                            "Set CM to +5V, apply 1V differential",
+                            "Verify output = 100mV (CM rejected)",
+                            "Repeat for CM = -5V, 0V, +10V"
+                        ],
+                        criteria: [
+                            { param: "Output @ CM=5V", min: "95mV", typ: "100mV", max: "105mV" },
+                            { param: "Output @ CM=10V", min: "95mV", typ: "100mV", max: "105mV" }
+                        ],
+                        fields: [
+                            { id: "out_cm0", label: "Output @ CM=0V (mV)", type: "number", step: "0.1" },
+                            { id: "out_cm5", label: "Output @ CM=5V (mV)", type: "number", step: "0.1" },
+                            { id: "out_cm10", label: "Output @ CM=10V (mV)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "B6": {
+                        name: "Channel Balance",
+                        objective: "Verify positive and negative channels are matched",
+                        setup: [
+                            "Apply +5V to INPUT_POS only (NEG grounded)",
+                            "Record output",
+                            "Swap: apply +5V to INPUT_NEG only"
+                        ],
+                        procedure: [
+                            "INPUT_POS = +5V, INPUT_NEG = GND",
+                            "Record output",
+                            "INPUT_POS = GND, INPUT_NEG = +5V",
+                            "Record output, calculate mismatch"
+                        ],
+                        criteria: [
+                            { param: "Channel Mismatch", min: "", typ: "", max: "1%" }
+                        ],
+                        fields: [
+                            { id: "out_pos", label: "Output +5V on POS (mV)", type: "number", step: "0.1" },
+                            { id: "out_neg", label: "Output +5V on NEG (mV)", type: "number", step: "0.1" },
+                            { id: "mismatch", label: "Mismatch (%)", type: "number", step: "0.01" }
+                        ]
+                    }
+                }
+            },
+            "C": {
+                name: "AC Performance",
+                tests: {
+                    "C1": {
+                        name: "Frequency Response",
+                        objective: "Verify flat frequency response (10Hz - 10MHz)",
+                        setup: [
+                            "Connect function generator to probe inputs",
+                            "Set generator to 1Vpp sine wave",
+                            "Connect output to scope with 50Ω termination"
+                        ],
+                        procedure: [
+                            "Measure output amplitude at each frequency",
+                            "Calculate gain relative to 1kHz reference",
+                            "Plot frequency response"
+                        ],
+                        criteria: [
+                            { param: "10Hz - 1MHz", min: "", typ: "", max: "±0.5dB" },
+                            { param: "1MHz - 10MHz", min: "", typ: "", max: "±1.0dB" }
+                        ],
+                        fields: [
+                            { id: "out_1k", label: "Output @ 1kHz (mV)", type: "number", step: "0.1" },
+                            { id: "out_100k", label: "Output @ 100kHz (mV)", type: "number", step: "0.1" },
+                            { id: "out_1M", label: "Output @ 1MHz (mV)", type: "number", step: "0.1" },
+                            { id: "out_10M", label: "Output @ 10MHz (mV)", type: "number", step: "0.1" },
+                            { id: "flatness", label: "Flatness (dB)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "C2": {
+                        name: "Step Response",
+                        objective: "Verify transient response and compensation",
+                        setup: [
+                            "Set function generator to 1kHz square wave, 1Vpp",
+                            "View output on scope, 1µs/div"
+                        ],
+                        procedure: [
+                            "Observe rising edge response",
+                            "Check for overshoot, ringing",
+                            "Measure rise time (10%-90%)"
+                        ],
+                        criteria: [
+                            { param: "Overshoot", min: "", typ: "", max: "5%" },
+                            { param: "Rise time", min: "", typ: "", max: "3.5ns" }
+                        ],
+                        fields: [
+                            { id: "overshoot", label: "Overshoot (%)", type: "number", step: "0.1" },
+                            { id: "undershoot", label: "Undershoot (%)", type: "number", step: "0.1" },
+                            { id: "rise_time", label: "Rise Time (ns)", type: "number", step: "0.1" },
+                            { id: "ringing", label: "Ringing", type: "select", options: ["None", "Minor", "Significant"] }
+                        ]
+                    },
+                    "C3": {
+                        name: "Compensation Adjustment",
+                        objective: "Optimize frequency compensation trimmers",
+                        setup: [
+                            "Apply 1kHz square wave, 1Vpp",
+                            "Monitor output on scope"
+                        ],
+                        procedure: [
+                            "Adjust C1 for flat top on square wave",
+                            "Adjust C2 for minimal overshoot",
+                            "Repeat for C5, C6 (negative channel)",
+                            "Iterate until optimal"
+                        ],
+                        criteria: [
+                            { param: "Square wave quality", min: "", typ: "Flat top", max: "" }
+                        ],
+                        fields: [
+                            { id: "c1_setting", label: "C1 Setting (turns)", type: "text" },
+                            { id: "c2_setting", label: "C2 Setting (turns)", type: "text" },
+                            { id: "c5_setting", label: "C5 Setting (turns)", type: "text" },
+                            { id: "c6_setting", label: "C6 Setting (turns)", type: "text" },
+                            { id: "quality", label: "Final Quality", type: "select", options: ["Excellent", "Good", "Needs work"] }
+                        ]
+                    },
+                    "C4": {
+                        name: "Phase Response",
+                        objective: "Verify minimal phase shift",
+                        setup: [
+                            "Split generator output to scope CH1 and probe",
+                            "Probe output to CH2",
+                            "Measure phase difference"
+                        ],
+                        procedure: [
+                            "Measure phase at 1kHz, 100kHz, 1MHz, 10MHz"
+                        ],
+                        criteria: [
+                            { param: "Phase @ 1kHz", min: "", typ: "", max: "±2°" },
+                            { param: "Phase @ 10MHz", min: "", typ: "", max: "±30°" }
+                        ],
+                        fields: [
+                            { id: "phase_1k", label: "Phase @ 1kHz (°)", type: "number", step: "0.1" },
+                            { id: "phase_100k", label: "Phase @ 100kHz (°)", type: "number", step: "0.1" },
+                            { id: "phase_1M", label: "Phase @ 1MHz (°)", type: "number", step: "0.1" },
+                            { id: "phase_10M", label: "Phase @ 10MHz (°)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "C5": {
+                        name: "Slew Rate",
+                        objective: "Measure maximum slew rate",
+                        setup: [
+                            "Apply fast edge signal",
+                            "Use maximum input amplitude (10V diff)"
+                        ],
+                        procedure: [
+                            "Measure output rise time for large signal",
+                            "Calculate slew rate: SR = ΔV / Δt"
+                        ],
+                        criteria: [
+                            { param: "Slew Rate", min: "100 V/µs", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "delta_v", label: "ΔV (V)", type: "number", step: "0.01" },
+                            { id: "delta_t", label: "Δt (ns)", type: "number", step: "0.1" },
+                            { id: "slew_rate", label: "Slew Rate (V/µs)", type: "number", step: "1" }
+                        ]
+                    },
+                    "C6": {
+                        name: "Output Drive",
+                        objective: "Verify probe can drive 50Ω load",
+                        setup: [
+                            "Connect probe output to 50Ω termination",
+                            "Apply 2Vpp differential input"
+                        ],
+                        procedure: [
+                            "Measure output with 50Ω load",
+                            "Measure output with 1MΩ load (high-Z)",
+                            "Calculate output impedance"
+                        ],
+                        criteria: [
+                            { param: "50Ω load output", min: "90%", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "out_1M", label: "Output @ 1MΩ (mV)", type: "number", step: "0.1" },
+                            { id: "out_50", label: "Output @ 50Ω (mV)", type: "number", step: "0.1" },
+                            { id: "z_out", label: "Calculated Zout (Ω)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "C7": {
+                        name: "Harmonic Distortion",
+                        objective: "Verify low distortion at 1MHz",
+                        setup: [
+                            "Apply 1MHz sine wave, 2Vpp differential",
+                            "View output on scope in FFT mode"
+                        ],
+                        procedure: [
+                            "Identify fundamental (1MHz)",
+                            "Measure 2nd and 3rd harmonic levels"
+                        ],
+                        criteria: [
+                            { param: "2nd Harmonic", min: "", typ: "", max: "-50 dBc" },
+                            { param: "3rd Harmonic", min: "", typ: "", max: "-50 dBc" }
+                        ],
+                        fields: [
+                            { id: "fundamental", label: "Fundamental (dBV)", type: "number", step: "0.1" },
+                            { id: "h2", label: "2nd Harmonic (dBc)", type: "number", step: "0.1" },
+                            { id: "h3", label: "3rd Harmonic (dBc)", type: "number", step: "0.1" }
+                        ]
+                    }
+                }
+            },
+            "D": {
+                name: "Common Mode Rejection",
+                tests: {
+                    "D1": {
+                        name: "CMRR at DC",
+                        objective: "Measure common mode rejection at DC",
+                        setup: [
+                            "Connect both inputs together",
+                            "Apply common mode voltage"
+                        ],
+                        procedure: [
+                            "Apply +5V CM, measure output",
+                            "Apply -5V CM, measure output",
+                            "Calculate CMRR = 20×log10(Vcm/Vout)"
+                        ],
+                        criteria: [
+                            { param: "CMRR @ DC", min: "60 dB", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "out_pos5", label: "Output @ +5V CM (mV)", type: "number", step: "0.01" },
+                            { id: "out_neg5", label: "Output @ -5V CM (mV)", type: "number", step: "0.01" },
+                            { id: "cmrr", label: "CMRR (dB)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "D2": {
+                        name: "CMRR at 1kHz",
+                        objective: "Measure CMRR at audio frequency",
+                        setup: [
+                            "Connect both inputs together",
+                            "Apply 5Vpp 1kHz sine wave"
+                        ],
+                        procedure: [
+                            "Measure output amplitude",
+                            "Calculate CMRR"
+                        ],
+                        criteria: [
+                            { param: "CMRR @ 1kHz", min: "70 dB", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "cm_input", label: "CM Input (Vpp)", type: "number", step: "0.1" },
+                            { id: "output", label: "Output (mVpp)", type: "number", step: "0.01" },
+                            { id: "cmrr", label: "CMRR (dB)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "D3": {
+                        name: "CMRR at 1MHz",
+                        objective: "Measure CMRR at high frequency",
+                        setup: [
+                            "Connect both inputs together",
+                            "Apply 5Vpp 1MHz sine wave"
+                        ],
+                        procedure: [
+                            "Measure output amplitude",
+                            "Calculate CMRR"
+                        ],
+                        criteria: [
+                            { param: "CMRR @ 1MHz", min: "60 dB", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "cm_input", label: "CM Input (Vpp)", type: "number", step: "0.1" },
+                            { id: "output", label: "Output (mVpp)", type: "number", step: "0.01" },
+                            { id: "cmrr", label: "CMRR (dB)", type: "number", step: "0.1" }
+                        ]
+                    },
+                    "D4": {
+                        name: "CMRR at 10MHz",
+                        objective: "Measure CMRR at maximum generator frequency",
+                        setup: [
+                            "Connect both inputs together",
+                            "Apply 5Vpp 10MHz sine wave"
+                        ],
+                        procedure: [
+                            "Measure output amplitude",
+                            "Calculate CMRR"
+                        ],
+                        criteria: [
+                            { param: "CMRR @ 10MHz", min: "50 dB", typ: "", max: "" }
+                        ],
+                        fields: [
+                            { id: "cm_input", label: "CM Input (Vpp)", type: "number", step: "0.1" },
+                            { id: "output", label: "Output (mVpp)", type: "number", step: "0.01" },
+                            { id: "cmrr", label: "CMRR (dB)", type: "number", step: "0.1" }
+                        ]
+                    }
+                }
+            },
+            "E": {
+                name: "Input Protection",
+                tests: {
+                    "E1": {
+                        name: "TVS Clamping",
+                        objective: "Verify TVS diodes clamp overvoltage",
+                        setup: [
+                            "Apply slowly increasing voltage through 10kΩ resistor",
+                            "Monitor voltage at attenuator output"
+                        ],
+                        procedure: [
+                            "Increase input voltage slowly",
+                            "Note voltage where clamping begins",
+                            "Verify clamp voltage within spec"
+                        ],
+                        criteria: [
+                            { param: "Clamp voltage", min: "5.5V", typ: "", max: "6.5V" }
+                        ],
+                        fields: [
+                            { id: "clamp_start", label: "Clamping Starts (V input)", type: "number", step: "0.1" },
+                            { id: "clamp_v", label: "Clamp Voltage (V)", type: "number", step: "0.01" }
+                        ]
+                    },
+                    "E2": {
+                        name: "ESD Survival",
+                        objective: "Verify probe survives ESD events",
+                        setup: [
+                            "Record initial DC attenuation ratio",
+                            "Prepare ESD source"
+                        ],
+                        procedure: [
+                            "Apply ±2kV contact discharge",
+                            "Verify probe functions",
+                            "Re-measure attenuation"
+                        ],
+                        criteria: [
+                            { param: "Post-ESD function", min: "", typ: "Normal", max: "" },
+                            { param: "Attenuation change", min: "", typ: "", max: "<0.5%" }
+                        ],
+                        fields: [
+                            { id: "ratio_pre", label: "Pre-ESD Ratio", type: "number", step: "0.01" },
+                            { id: "ratio_post", label: "Post-ESD Ratio", type: "number", step: "0.01" },
+                            { id: "functional", label: "Functional", type: "select", options: ["Yes", "No"] }
+                        ]
+                    },
+                    "E3": {
+                        name: "Reverse Polarity",
+                        objective: "Verify probe survives reversed battery",
+                        setup: [
+                            "Prepare reversed polarity battery connection"
+                        ],
+                        procedure: [
+                            "Briefly connect reversed battery (1 sec)",
+                            "Disconnect immediately",
+                            "Connect correctly, verify operation"
+                        ],
+                        criteria: [
+                            { param: "Post-reverse function", min: "", typ: "Normal", max: "" }
+                        ],
+                        fields: [
+                            { id: "duration", label: "Duration (sec)", type: "number", step: "0.1" },
+                            { id: "functional", label: "Post-test Function", type: "select", options: ["Normal", "Damaged"] }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // Data storage
+        let testData = {
+            dutInfo: {},
+            results: {}  // { testId: [{ timestamp, status, values, notes }] }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            renderTests();
+            updateSummary();
+
+            // Set default date
+            if (!document.getElementById('dut-date').value) {
+                document.getElementById('dut-date').value = new Date().toISOString().split('T')[0];
+            }
+        });
+
+        function loadData() {
+            const saved = localStorage.getItem('diffprobe-test-data');
+            if (saved) {
+                testData = JSON.parse(saved);
+                document.getElementById('dut-serial').value = testData.dutInfo.serial || '';
+                document.getElementById('dut-tester').value = testData.dutInfo.tester || '';
+                document.getElementById('dut-date').value = testData.dutInfo.date || '';
+                document.getElementById('dut-revision').value = testData.dutInfo.revision || '';
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('diffprobe-test-data', JSON.stringify(testData));
+            updateSummary();
+        }
+
+        function saveDutInfo() {
+            testData.dutInfo = {
+                serial: document.getElementById('dut-serial').value,
+                tester: document.getElementById('dut-tester').value,
+                date: document.getElementById('dut-date').value,
+                revision: document.getElementById('dut-revision').value
+            };
+            saveData();
+        }
+
+        function renderTests() {
+            const container = document.getElementById('test-categories');
+            container.innerHTML = '';
+
+            for (const [catId, category] of Object.entries(testDefinitions)) {
+                const catEl = document.createElement('div');
+                catEl.className = 'category';
+
+                const stats = getCategoryStats(catId);
+
+                catEl.innerHTML = `
+                    <div class="category-header" onclick="toggleCategory('${catId}')">
+                        <h2>${catId}. ${category.name}</h2>
+                        <div class="category-stats">
+                            <span class="stat-badge stat-pass">${stats.pass}</span>
+                            <span class="stat-badge stat-fail">${stats.fail}</span>
+                            <span class="stat-badge stat-pending">${stats.pending}</span>
+                        </div>
+                    </div>
+                    <div class="category-tests" id="cat-${catId}">
+                        ${Object.entries(category.tests).map(([testId, test]) => renderTest(testId, test)).join('')}
+                    </div>
+                `;
+
+                container.appendChild(catEl);
+            }
+        }
+
+        function renderTest(testId, test) {
+            const lastResult = getLastResult(testId);
+            const statusClass = lastResult ? lastResult.status : '';
+            const lastRun = lastResult ? formatDate(lastResult.timestamp) : 'Not tested';
+
+            return `
+                <div class="test-item" id="test-${testId}">
+                    <div class="test-header" onclick="toggleTest('${testId}')">
+                        <div class="test-title">
+                            <span class="test-id">${testId}</span>
+                            <span class="test-name">${test.name}</span>
+                        </div>
+                        <div class="test-status">
+                            <span class="last-run">${lastRun}</span>
+                            <span class="status-indicator ${statusClass}"></span>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="test-content">
+                        <div class="test-section">
+                            <h4>Objective</h4>
+                            <p>${test.objective}</p>
+                        </div>
+                        <div class="test-section">
+                            <h4>Setup</h4>
+                            <ul>${test.setup.map(s => `<li>${s}</li>`).join('')}</ul>
+                        </div>
+                        <div class="test-section">
+                            <h4>Procedure</h4>
+                            <ul>${test.procedure.map(p => `<li>${p}</li>`).join('')}</ul>
+                        </div>
+                        <div class="test-section">
+                            <h4>Pass Criteria</h4>
+                            <table>
+                                <tr><th>Parameter</th><th>Min</th><th>Typ</th><th>Max</th></tr>
+                                ${test.criteria.map(c => `<tr><td>${c.param}</td><td>${c.min}</td><td>${c.typ}</td><td>${c.max}</td></tr>`).join('')}
+                            </table>
+                        </div>
+                        <div class="run-test-form">
+                            <h4>Record Test Result</h4>
+                            <div class="form-row">
+                                ${test.fields.map(f => renderField(testId, f)).join('')}
+                            </div>
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <textarea id="${testId}-notes" placeholder="Optional notes..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button onclick="recordResult('${testId}', 'pass')">Pass</button>
+                                <button onclick="recordResult('${testId}', 'fail')" style="background: var(--fail)">Fail</button>
+                            </div>
+                        </div>
+                        ${renderHistory(testId)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderField(testId, field) {
+            if (field.type === 'select') {
+                return `
+                    <div class="form-group">
+                        <label>${field.label}</label>
+                        <select id="${testId}-${field.id}">
+                            ${field.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            }
+            return `
+                <div class="form-group">
+                    <label>${field.label}</label>
+                    <input type="${field.type}" id="${testId}-${field.id}" step="${field.step || ''}">
+                </div>
+            `;
+        }
+
+        function renderHistory(testId) {
+            const results = testData.results[testId] || [];
+            if (results.length === 0) return '';
+
+            return `
+                <div class="history-section">
+                    <h4 onclick="toggleHistory('${testId}')">
+                        <span class="expand-icon" id="hist-icon-${testId}">▶</span>
+                        Test History (${results.length} runs)
+                    </h4>
+                    <div class="history-list" id="history-${testId}">
+                        ${results.slice().reverse().map(r => renderHistoryItem(r, testId)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderHistoryItem(result, testId) {
+            const test = getTestDef(testId);
+            return `
+                <div class="history-item">
+                    <div class="history-item-header">
+                        <span class="history-item-date">${formatDate(result.timestamp)}</span>
+                        <span class="history-item-status ${result.status}">${result.status.toUpperCase()}</span>
+                    </div>
+                    <div class="history-item-values">
+                        ${test.fields.map(f => `
+                            <div class="history-value">
+                                <span class="history-value-label">${f.label}</span>
+                                <span class="history-value-data">${result.values[f.id] || '-'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${result.notes ? `<div style="margin-top: 0.5rem; font-style: italic; color: var(--text-muted);">${result.notes}</div>` : ''}
+                </div>
+            `;
+        }
+
+        function getTestDef(testId) {
+            const catId = testId.charAt(0);
+            return testDefinitions[catId].tests[testId];
+        }
+
+        function getLastResult(testId) {
+            const results = testData.results[testId];
+            return results && results.length > 0 ? results[results.length - 1] : null;
+        }
+
+        function getCategoryStats(catId) {
+            const category = testDefinitions[catId];
+            let pass = 0, fail = 0, pending = 0;
+
+            for (const testId of Object.keys(category.tests)) {
+                const last = getLastResult(testId);
+                if (!last) pending++;
+                else if (last.status === 'pass') pass++;
+                else fail++;
+            }
+
+            return { pass, fail, pending };
+        }
+
+        function updateSummary() {
+            let totalPass = 0, totalFail = 0, totalPending = 0;
+
+            for (const catId of Object.keys(testDefinitions)) {
+                const stats = getCategoryStats(catId);
+                totalPass += stats.pass;
+                totalFail += stats.fail;
+                totalPending += stats.pending;
+            }
+
+            document.getElementById('total-pass').textContent = totalPass;
+            document.getElementById('total-fail').textContent = totalFail;
+            document.getElementById('total-pending').textContent = totalPending;
+
+            const total = totalPass + totalFail + totalPending;
+            const completed = totalPass + totalFail;
+            const percent = total > 0 ? Math.round(completed / total * 100) : 0;
+
+            document.getElementById('progress-percent').textContent = percent + '%';
+            document.getElementById('progress-fill').style.width = percent + '%';
+        }
+
+        function toggleCategory(catId) {
+            const el = document.getElementById('cat-' + catId);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleTest(testId) {
+            const el = document.getElementById('test-' + testId);
+            el.classList.toggle('expanded');
+        }
+
+        function toggleHistory(testId) {
+            const el = document.getElementById('history-' + testId);
+            const icon = document.getElementById('hist-icon-' + testId);
+            el.classList.toggle('visible');
+            icon.textContent = el.classList.contains('visible') ? '▼' : '▶';
+        }
+
+        function recordResult(testId, status) {
+            const test = getTestDef(testId);
+            const values = {};
+
+            for (const field of test.fields) {
+                const el = document.getElementById(`${testId}-${field.id}`);
+                values[field.id] = el.value;
+            }
+
+            const notes = document.getElementById(`${testId}-notes`).value;
+
+            if (!testData.results[testId]) {
+                testData.results[testId] = [];
+            }
+
+            testData.results[testId].push({
+                timestamp: new Date().toISOString(),
+                status,
+                values,
+                notes
+            });
+
+            saveData();
+            renderTests();
+        }
+
+        function formatDate(isoString) {
+            const d = new Date(isoString);
+            return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(testData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `diffprobe-test-${testData.dutInfo.serial || 'unknown'}-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showImportModal() {
+            document.getElementById('import-modal').classList.add('visible');
+        }
+
+        function hideImportModal() {
+            document.getElementById('import-modal').classList.remove('visible');
+        }
+
+        function importData() {
+            try {
+                const dataStr = document.getElementById('import-data').value;
+                const imported = JSON.parse(dataStr);
+                testData = imported;
+                saveData();
+                loadData();
+                renderTests();
+                hideImportModal();
+                alert('Data imported successfully!');
+            } catch (e) {
+                alert('Invalid JSON data: ' + e.message);
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all test data? This cannot be undone.')) {
+                testData = { dutInfo: {}, results: {} };
+                saveData();
+                document.getElementById('dut-serial').value = '';
+                document.getElementById('dut-tester').value = '';
+                document.getElementById('dut-revision').value = '';
+                renderTests();
+            }
+        }
+    </script>
+</body>
+</html>
