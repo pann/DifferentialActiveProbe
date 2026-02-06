@@ -366,6 +366,29 @@
         .history-item-status.pass { background: var(--pass); color: #000; }
         .history-item-status.fail { background: var(--fail); color: #fff; }
 
+        .history-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .delete-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 0.1rem 0.4rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 3px;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: var(--fail);
+            color: #fff;
+        }
+
         .history-item-values {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1382,19 +1405,22 @@
                         Test History (${results.length} runs)
                     </h4>
                     <div class="history-list" id="history-${testId}">
-                        ${results.slice().reverse().map(r => renderHistoryItem(r, testId)).join('')}
+                        ${results.slice().reverse().map((r, idx) => renderHistoryItem(r, testId, results.length - 1 - idx)).join('')}
                     </div>
                 </div>
             `;
         }
 
-        function renderHistoryItem(result, testId) {
+        function renderHistoryItem(result, testId, index) {
             const test = getTestDef(testId);
             return `
                 <div class="history-item">
                     <div class="history-item-header">
                         <span class="history-item-date">${formatDate(result.timestamp)}</span>
-                        <span class="history-item-status ${result.status}">${result.status.toUpperCase()}</span>
+                        <div class="history-item-actions">
+                            <span class="history-item-status ${result.status}">${result.status.toUpperCase()}</span>
+                            <button class="delete-btn" onclick="deleteResult('${testId}', ${index})" title="Delete this test run">×</button>
+                        </div>
                     </div>
                     <div class="history-item-values">
                         ${test.fields.map(f => `
@@ -1407,6 +1433,17 @@
                     ${result.notes ? `<div style="margin-top: 0.5rem; font-style: italic; color: var(--text-muted);">${result.notes}</div>` : ''}
                 </div>
             `;
+        }
+
+        function deleteResult(testId, index) {
+            if (confirm('Delete this test run?')) {
+                testData.results[testId].splice(index, 1);
+                if (testData.results[testId].length === 0) {
+                    delete testData.results[testId];
+                }
+                saveData();
+                renderTests();
+            }
         }
 
         function getTestDef(testId) {
