@@ -628,12 +628,14 @@
             }
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Differential Probe - Test Runner</h1>
             <div class="header-controls">
+                <button onclick="exportPDF()">Export PDF Report</button>
                 <button onclick="exportData()">Export JSON</button>
                 <button onclick="showImportModal()">Import JSON</button>
                 <button onclick="clearAllData()" style="background: var(--fail);">Clear All</button>
@@ -1730,6 +1732,205 @@
             a.download = `diffprobe-test-${testData.dutInfo.serial || 'unknown'}-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
             URL.revokeObjectURL(url);
+        }
+
+        function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            const contentWidth = pageWidth - 2 * margin;
+            let y = 20;
+
+            const projectName = 'Differential Active Probe';
+            const dateStr = new Date().toLocaleDateString();
+            const timeStr = new Date().toLocaleTimeString();
+
+            // Helper to add new page if needed
+            function checkPage(needed = 20) {
+                if (y + needed > 280) {
+                    doc.addPage();
+                    y = 20;
+                }
+            }
+
+            // Title
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Test Report', pageWidth / 2, y, { align: 'center' });
+            y += 8;
+
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text(projectName, pageWidth / 2, y, { align: 'center' });
+            y += 10;
+
+            // DUT Info
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            const dutInfo = testData.dutInfo || {};
+            doc.text(`Date: ${dateStr} ${timeStr}`, margin, y);
+            y += 5;
+            if (dutInfo.revision) {
+                doc.text(`Revision: ${dutInfo.revision}`, margin, y);
+                y += 5;
+            }
+            if (dutInfo.serial) {
+                doc.text(`Serial Number: ${dutInfo.serial}`, margin, y);
+                y += 5;
+            }
+            if (dutInfo.tester) {
+                doc.text(`Tester: ${dutInfo.tester}`, margin, y);
+                y += 5;
+            }
+            y += 5;
+
+            // Summary
+            let totalPass = 0, totalFail = 0, totalPending = 0;
+            for (const catId of Object.keys(testDefinitions)) {
+                for (const testId of Object.keys(testDefinitions[catId].tests)) {
+                    const results = testData.results[testId];
+                    if (results && results.length > 0) {
+                        const last = results[results.length - 1];
+                        if (last.status === 'pass') totalPass++;
+                        else if (last.status === 'fail') totalFail++;
+                    } else {
+                        totalPending++;
+                    }
+                }
+            }
+
+            doc.setFillColor(240, 240, 240);
+            doc.rect(margin, y, contentWidth, 20, 'F');
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            y += 7;
+            doc.text('Summary', margin + 5, y);
+            y += 7;
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+
+            const total = totalPass + totalFail + totalPending;
+            const completed = totalPass + totalFail;
+            const percent = total > 0 ? Math.round(completed / total * 100) : 0;
+
+            doc.setTextColor(46, 204, 113);
+            doc.text(`Passed: ${totalPass}`, margin + 5, y);
+            doc.setTextColor(231, 76, 60);
+            doc.text(`Failed: ${totalFail}`, margin + 50, y);
+            doc.setTextColor(243, 156, 18);
+            doc.text(`Pending: ${totalPending}`, margin + 95, y);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Progress: ${percent}% (${completed}/${total})`, margin + 145, y);
+            y += 15;
+
+            // Test Results by Category
+            for (const catId of Object.keys(testDefinitions)) {
+                const category = testDefinitions[catId];
+
+                checkPage(25);
+                doc.setFillColor(15, 52, 96);
+                doc.setTextColor(255, 255, 255);
+                doc.rect(margin, y, contentWidth, 8, 'F');
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${catId}. ${category.name}`, margin + 3, y + 5.5);
+                doc.setTextColor(0, 0, 0);
+                y += 12;
+
+                for (const testId of Object.keys(category.tests)) {
+                    const test = category.tests[testId];
+                    const results = testData.results[testId];
+                    const lastResult = results && results.length > 0 ? results[results.length - 1] : null;
+
+                    checkPage(30);
+
+                    // Test ID and name
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${testId}: ${test.name}`, margin, y);
+
+                    // Status badge
+                    const status = lastResult ? lastResult.status.toUpperCase() : 'PENDING';
+                    if (lastResult?.status === 'pass') {
+                        doc.setTextColor(46, 204, 113);
+                    } else if (lastResult?.status === 'fail') {
+                        doc.setTextColor(231, 76, 60);
+                    } else {
+                        doc.setTextColor(243, 156, 18);
+                    }
+                    doc.text(status, pageWidth - margin - 20, y);
+                    doc.setTextColor(0, 0, 0);
+                    y += 5;
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(9);
+
+                    if (lastResult) {
+                        // Timestamp
+                        doc.setTextColor(100, 100, 100);
+                        doc.text(`Tested: ${formatDate(lastResult.timestamp)}`, margin + 5, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 4;
+
+                        // Measurement values
+                        if (test.fields && test.fields.length > 0) {
+                            const valueStrs = test.fields.map(f => {
+                                const val = lastResult.values[f.id] || '-';
+                                return `${f.label}: ${val}`;
+                            });
+
+                            // Split into lines if too long
+                            let line = '';
+                            for (const vs of valueStrs) {
+                                if (line.length + vs.length > 80) {
+                                    doc.text(line, margin + 5, y);
+                                    y += 4;
+                                    line = vs;
+                                } else {
+                                    line = line ? line + '  |  ' + vs : vs;
+                                }
+                            }
+                            if (line) {
+                                doc.text(line, margin + 5, y);
+                                y += 4;
+                            }
+                        }
+
+                        // Notes
+                        if (lastResult.notes) {
+                            doc.setTextColor(80, 80, 80);
+                            const noteLines = doc.splitTextToSize(`Notes: ${lastResult.notes}`, contentWidth - 10);
+                            for (const nl of noteLines) {
+                                checkPage(5);
+                                doc.text(nl, margin + 5, y);
+                                y += 4;
+                            }
+                            doc.setTextColor(0, 0, 0);
+                        }
+                    } else {
+                        doc.setTextColor(100, 100, 100);
+                        doc.text('Not tested yet', margin + 5, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 4;
+                    }
+
+                    y += 4; // Space between tests
+                }
+
+                y += 5; // Space between categories
+            }
+
+            // Footer
+            checkPage(15);
+            y += 5;
+            doc.setFontSize(8);
+            doc.setTextColor(128, 128, 128);
+            doc.text(`Generated by Differential Probe Test Runner - ${dateStr}`, pageWidth / 2, 290, { align: 'center' });
+
+            // Save
+            const filename = `DifferentialProbe-TestReport-${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(filename);
         }
 
         function showImportModal() {
