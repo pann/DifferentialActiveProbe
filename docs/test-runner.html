@@ -410,6 +410,210 @@
             color: #fff;
         }
 
+        /* Test management buttons */
+        .delete-test-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--text-muted);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .delete-test-btn:hover {
+            background: var(--fail);
+            border-color: var(--fail);
+            color: #fff;
+        }
+
+        .add-test-btn {
+            background: var(--accent);
+            color: var(--text);
+            border: 1px dashed var(--text-muted);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .add-test-btn:hover {
+            background: var(--highlight);
+            border-color: var(--highlight);
+        }
+
+        .add-test-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1500;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .add-test-modal.visible {
+            display: flex;
+        }
+
+        .add-test-form {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 700px;
+            width: 100%;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .add-test-form h3 {
+            color: var(--highlight);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-test-form .form-section {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .add-test-form .form-section h4 {
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .add-test-form .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .add-test-form .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .add-test-form .form-group input,
+        .add-test-form .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--bg-color);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+
+        .add-test-form .form-group textarea {
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .dynamic-list {
+            margin-top: 0.5rem;
+        }
+
+        .dynamic-list-item {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dynamic-list-item input {
+            flex: 1;
+        }
+
+        .dynamic-list-item button {
+            padding: 0.25rem 0.5rem;
+            background: var(--fail);
+            border: none;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .add-list-item-btn {
+            background: var(--accent);
+            color: var(--text);
+            border: 1px dashed var(--text-muted);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-top: 0.25rem;
+        }
+
+        .add-list-item-btn:hover {
+            background: var(--highlight);
+            border-color: var(--highlight);
+        }
+
+        .criteria-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .criteria-row input {
+            padding: 0.4rem;
+            background: var(--input-bg);
+            border: 1px solid var(--bg-color);
+            border-radius: 3px;
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1fr auto;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .field-row input,
+        .field-row select {
+            padding: 0.4rem;
+            background: var(--input-bg);
+            border: 1px solid var(--bg-color);
+            border-radius: 3px;
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+
+        .add-test-form .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        #save-defs-btn.has-changes {
+            background: var(--pending);
+            color: #000;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         .history-item-values {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -659,6 +863,7 @@
                 <button onclick="saveToFile()" class="btn-primary">Save Data</button>
                 <button onclick="loadFromFile()">Load Data</button>
                 <span id="save-indicator" class="save-indicator saved">✓ Saved</span>
+                <button onclick="saveDefinitions()" id="save-defs-btn">Save Definitions</button>
                 <button onclick="exportPDF()">Export PDF</button>
                 <button onclick="clearAllData()" style="background: var(--fail);">Clear All</button>
             </div>
@@ -730,6 +935,75 @@
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
         <span class="lightbox-close">&times;</span>
         <img id="lightbox-img" src="" alt="Test image">
+    </div>
+
+    <div class="add-test-modal" id="add-test-modal">
+        <div class="add-test-form">
+            <h3>
+                <span id="add-test-title">Add New Test</span>
+                <button onclick="hideAddTestModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </h3>
+            <input type="hidden" id="new-test-category">
+
+            <div class="form-section">
+                <h4>Basic Information</h4>
+                <div class="form-group">
+                    <label>Test ID (e.g., A9, B7)</label>
+                    <input type="text" id="new-test-id" placeholder="Enter test ID">
+                </div>
+                <div class="form-group">
+                    <label>Test Name</label>
+                    <input type="text" id="new-test-name" placeholder="Enter test name">
+                </div>
+                <div class="form-group">
+                    <label>Objective</label>
+                    <textarea id="new-test-objective" placeholder="Describe the test objective..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4>Setup Steps</h4>
+                <div class="dynamic-list" id="setup-list"></div>
+                <button class="add-list-item-btn" onclick="addSetupItem()">+ Add Setup Step</button>
+            </div>
+
+            <div class="form-section">
+                <h4>Procedure Steps</h4>
+                <div class="dynamic-list" id="procedure-list"></div>
+                <button class="add-list-item-btn" onclick="addProcedureItem()">+ Add Procedure Step</button>
+            </div>
+
+            <div class="form-section">
+                <h4>Pass Criteria</h4>
+                <div class="criteria-row" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                    <span>Parameter</span>
+                    <span>Min</span>
+                    <span>Typ</span>
+                    <span>Max</span>
+                    <span></span>
+                </div>
+                <div id="criteria-list"></div>
+                <button class="add-list-item-btn" onclick="addCriteriaItem()">+ Add Criterion</button>
+            </div>
+
+            <div class="form-section">
+                <h4>Result Fields</h4>
+                <div class="field-row" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                    <span>Field ID</span>
+                    <span>Label</span>
+                    <span>Type</span>
+                    <span>Options/Step</span>
+                    <span></span>
+                </div>
+                <div id="fields-list"></div>
+                <button class="add-list-item-btn" onclick="addFieldItem()">+ Add Field</button>
+            </div>
+
+            <div class="form-actions">
+                <button onclick="hideAddTestModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveNewTest()">Save Test</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1460,7 +1734,7 @@
 
             // Warn before leaving with unsaved changes
             window.addEventListener('beforeunload', (e) => {
-                if (hasUnsavedChanges) {
+                if (hasUnsavedChanges || hasDefinitionChanges) {
                     e.preventDefault();
                     e.returnValue = '';
                 }
@@ -1625,6 +1899,7 @@
                     </div>
                     <div class="category-tests" id="cat-${catId}">
                         ${Object.entries(category.tests).map(([testId, test]) => renderTest(testId, test)).join('')}
+                        <button class="add-test-btn" onclick="event.stopPropagation(); showAddTestModal('${catId}')">+ Add Test to ${category.name}</button>
                     </div>
                 `;
 
@@ -1643,6 +1918,7 @@
                         <div class="test-title">
                             <span class="test-id">${testId}</span>
                             <span class="test-name">${test.name}</span>
+                            <button class="delete-test-btn" onclick="event.stopPropagation(); deleteTest('${testId}')" title="Delete test">Delete</button>
                         </div>
                         <div class="test-status">
                             <span class="last-run">${lastRun}</span>
@@ -2185,6 +2461,333 @@
                 document.getElementById('dut-revision').value = '';
                 renderTests();
             }
+        }
+
+        // ============ Test Management Functions ============
+
+        let hasDefinitionChanges = false;
+
+        function updateDefinitionsButton() {
+            const btn = document.getElementById('save-defs-btn');
+            if (btn) {
+                if (hasDefinitionChanges) {
+                    btn.classList.add('has-changes');
+                    btn.textContent = 'Save Definitions*';
+                } else {
+                    btn.classList.remove('has-changes');
+                    btn.textContent = 'Save Definitions';
+                }
+            }
+        }
+
+        function showAddTestModal(catId) {
+            document.getElementById('new-test-category').value = catId;
+            document.getElementById('add-test-title').textContent = `Add Test to Category ${catId}`;
+
+            // Clear previous inputs
+            document.getElementById('new-test-id').value = '';
+            document.getElementById('new-test-name').value = '';
+            document.getElementById('new-test-objective').value = '';
+            document.getElementById('setup-list').innerHTML = '';
+            document.getElementById('procedure-list').innerHTML = '';
+            document.getElementById('criteria-list').innerHTML = '';
+            document.getElementById('fields-list').innerHTML = '';
+
+            // Suggest next test ID
+            const category = testDefinitions[catId];
+            const existingIds = Object.keys(category.tests).map(id => parseInt(id.substring(1))).filter(n => !isNaN(n));
+            const nextNum = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
+            document.getElementById('new-test-id').value = catId + nextNum;
+
+            // Add initial items
+            addSetupItem();
+            addProcedureItem();
+            addCriteriaItem();
+            addFieldItem();
+
+            document.getElementById('add-test-modal').classList.add('visible');
+        }
+
+        function hideAddTestModal() {
+            document.getElementById('add-test-modal').classList.remove('visible');
+        }
+
+        function addSetupItem(value = '') {
+            const list = document.getElementById('setup-list');
+            const idx = list.children.length;
+            const item = document.createElement('div');
+            item.className = 'dynamic-list-item';
+            item.innerHTML = `
+                <input type="text" id="setup-${idx}" value="${escapeHtml(value)}" placeholder="Setup step ${idx + 1}...">
+                <button onclick="removeListItem(this)">×</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function addProcedureItem(value = '') {
+            const list = document.getElementById('procedure-list');
+            const idx = list.children.length;
+            const item = document.createElement('div');
+            item.className = 'dynamic-list-item';
+            item.innerHTML = `
+                <input type="text" id="procedure-${idx}" value="${escapeHtml(value)}" placeholder="Procedure step ${idx + 1}...">
+                <button onclick="removeListItem(this)">×</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function addCriteriaItem(criterion = {}) {
+            const list = document.getElementById('criteria-list');
+            const idx = list.children.length;
+            const item = document.createElement('div');
+            item.className = 'criteria-row';
+            item.innerHTML = `
+                <input type="text" placeholder="Parameter" value="${escapeHtml(criterion.param || '')}">
+                <input type="text" placeholder="Min" value="${escapeHtml(criterion.min || '')}">
+                <input type="text" placeholder="Typ" value="${escapeHtml(criterion.typ || '')}">
+                <input type="text" placeholder="Max" value="${escapeHtml(criterion.max || '')}">
+                <button onclick="removeListItem(this)" style="padding: 0.25rem 0.5rem; background: var(--fail); border: none; color: white; border-radius: 3px; cursor: pointer;">×</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function addFieldItem(field = {}) {
+            const list = document.getElementById('fields-list');
+            const idx = list.children.length;
+            const item = document.createElement('div');
+            item.className = 'field-row';
+            item.innerHTML = `
+                <input type="text" placeholder="field_id" value="${escapeHtml(field.id || '')}">
+                <input type="text" placeholder="Field Label" value="${escapeHtml(field.label || '')}">
+                <select onchange="updateFieldOptions(this)">
+                    <option value="number" ${field.type === 'number' ? 'selected' : ''}>Number</option>
+                    <option value="text" ${field.type === 'text' ? 'selected' : ''}>Text</option>
+                    <option value="select" ${field.type === 'select' ? 'selected' : ''}>Select</option>
+                </select>
+                <input type="text" placeholder="${field.type === 'select' ? 'opt1,opt2,opt3' : 'step (e.g., 0.1)'}" value="${escapeHtml(field.type === 'select' ? (field.options || []).join(',') : (field.step || ''))}">
+                <button onclick="removeListItem(this)" style="padding: 0.25rem 0.5rem; background: var(--fail); border: none; color: white; border-radius: 3px; cursor: pointer;">×</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function updateFieldOptions(selectEl) {
+            const row = selectEl.closest('.field-row');
+            const optionsInput = row.querySelector('input:nth-of-type(2)');
+            if (selectEl.value === 'select') {
+                optionsInput.placeholder = 'opt1,opt2,opt3';
+            } else {
+                optionsInput.placeholder = 'step (e.g., 0.1)';
+            }
+        }
+
+        function removeListItem(btn) {
+            btn.closest('.dynamic-list-item, .criteria-row, .field-row').remove();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        async function saveNewTest() {
+            const catId = document.getElementById('new-test-category').value;
+            const testId = document.getElementById('new-test-id').value.trim();
+            const name = document.getElementById('new-test-name').value.trim();
+            const objective = document.getElementById('new-test-objective').value.trim();
+
+            // Validation
+            if (!testId) {
+                alert('Please enter a Test ID');
+                return;
+            }
+            if (!testId.startsWith(catId)) {
+                alert(`Test ID must start with category letter "${catId}"`);
+                return;
+            }
+            if (!name) {
+                alert('Please enter a Test Name');
+                return;
+            }
+            if (!objective) {
+                alert('Please enter a Test Objective');
+                return;
+            }
+
+            // Check for duplicate ID
+            if (testDefinitions[catId].tests[testId]) {
+                alert(`Test ID "${testId}" already exists. Please choose a different ID.`);
+                return;
+            }
+
+            // Collect setup steps
+            const setup = [];
+            document.querySelectorAll('#setup-list input').forEach(input => {
+                if (input.value.trim()) setup.push(input.value.trim());
+            });
+            if (setup.length === 0) {
+                alert('Please add at least one setup step');
+                return;
+            }
+
+            // Collect procedure steps
+            const procedure = [];
+            document.querySelectorAll('#procedure-list input').forEach(input => {
+                if (input.value.trim()) procedure.push(input.value.trim());
+            });
+            if (procedure.length === 0) {
+                alert('Please add at least one procedure step');
+                return;
+            }
+
+            // Collect criteria
+            const criteria = [];
+            document.querySelectorAll('#criteria-list .criteria-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                if (inputs[0].value.trim()) {
+                    criteria.push({
+                        param: inputs[0].value.trim(),
+                        min: inputs[1].value.trim(),
+                        typ: inputs[2].value.trim(),
+                        max: inputs[3].value.trim()
+                    });
+                }
+            });
+            if (criteria.length === 0) {
+                alert('Please add at least one pass criterion');
+                return;
+            }
+
+            // Collect fields
+            const fields = [];
+            document.querySelectorAll('#fields-list .field-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const id = inputs[0].value.trim();
+                const label = inputs[1].value.trim();
+                const type = row.querySelector('select').value;
+                const optionsStep = inputs[2]?.value.trim() || '';
+
+                if (id && label) {
+                    const field = { id, label, type };
+                    if (type === 'select') {
+                        field.options = optionsStep.split(',').map(o => o.trim()).filter(o => o);
+                    } else if (type === 'number' && optionsStep) {
+                        field.step = optionsStep;
+                    }
+                    fields.push(field);
+                }
+            });
+            if (fields.length === 0) {
+                alert('Please add at least one result field');
+                return;
+            }
+
+            // Create the test
+            const newTest = {
+                name,
+                objective,
+                setup,
+                procedure,
+                criteria,
+                fields
+            };
+
+            // Add to definitions
+            testDefinitions[catId].tests[testId] = newTest;
+
+            hideAddTestModal();
+            renderTests();
+            updateSummary();
+
+            // Auto-save definitions
+            await saveDefinitionsAuto();
+        }
+
+        async function deleteTest(testId) {
+            const catId = testId.charAt(0);
+            const test = testDefinitions[catId]?.tests[testId];
+
+            if (!test) {
+                alert('Test not found');
+                return;
+            }
+
+            const hasResults = testData.results[testId] && testData.results[testId].length > 0;
+            const message = hasResults
+                ? `Delete test "${testId}: ${test.name}"?\n\nWARNING: This test has ${testData.results[testId].length} recorded result(s) that will also be deleted!`
+                : `Delete test "${testId}: ${test.name}"?`;
+
+            if (confirm(message)) {
+                // Remove from definitions
+                delete testDefinitions[catId].tests[testId];
+
+                // Remove any results for this test
+                if (testData.results[testId]) {
+                    delete testData.results[testId];
+                    saveData();
+                }
+
+                renderTests();
+                updateSummary();
+
+                // Auto-save definitions
+                await saveDefinitionsAuto();
+            }
+        }
+
+        // Auto-save definitions (called when adding/deleting tests)
+        async function saveDefinitionsAuto() {
+            // Try File System Access API first
+            if ('showSaveFilePicker' in window) {
+                try {
+                    // Request file handle if we don't have one
+                    if (!fileHandleDefinitions) {
+                        fileHandleDefinitions = await window.showSaveFilePicker({
+                            suggestedName: DEFINITIONS_FILE,
+                            types: [{
+                                description: 'JSON Files',
+                                accept: { 'application/json': ['.json'] }
+                            }]
+                        });
+                    }
+                    const writable = await fileHandleDefinitions.createWritable();
+                    await writable.write(JSON.stringify(testDefinitions, null, 2));
+                    await writable.close();
+                    hasDefinitionChanges = false;
+                    updateDefinitionsButton();
+                    console.log('Test definitions saved to file');
+                    return true;
+                } catch (e) {
+                    if (e.name === 'AbortError') {
+                        // User cancelled - mark as unsaved
+                        hasDefinitionChanges = true;
+                        updateDefinitionsButton();
+                        alert('File save cancelled. Changes are unsaved - click "Save Definitions" to save later.');
+                        return false;
+                    }
+                    console.error('File System Access API error:', e);
+                }
+            }
+
+            // Fall back to download
+            const dataStr = JSON.stringify(testDefinitions, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = DEFINITIONS_FILE;
+            a.click();
+            URL.revokeObjectURL(url);
+            hasDefinitionChanges = false;
+            updateDefinitionsButton();
+            alert('Test definitions file downloaded.\nMove it to the docs/ folder to replace the existing file.');
+            return true;
+        }
+
+        // Manual save definitions (from button)
+        async function saveDefinitions() {
+            // Force re-request file handle
+            fileHandleDefinitions = null;
+            await saveDefinitionsAuto();
         }
     </script>
 </body>
