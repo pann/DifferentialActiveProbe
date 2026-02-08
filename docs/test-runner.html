@@ -57,6 +57,27 @@
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .save-indicator {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        .save-indicator.saved {
+            color: var(--pass);
+        }
+
+        .save-indicator.unsaved {
+            color: var(--fail);
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--pass) !important;
         }
 
         button {
@@ -635,9 +656,10 @@
         <header>
             <h1>Differential Probe - Test Runner</h1>
             <div class="header-controls">
-                <button onclick="exportPDF()">Export PDF Report</button>
-                <button onclick="exportData()">Export JSON</button>
-                <button onclick="showImportModal()">Import JSON</button>
+                <button onclick="saveToFile()" class="btn-primary">Save Data</button>
+                <button onclick="loadFromFile()">Load Data</button>
+                <span id="save-indicator" class="save-indicator saved">✓ Saved</span>
+                <button onclick="exportPDF()">Export PDF</button>
                 <button onclick="clearAllData()" style="background: var(--fail);">Clear All</button>
             </div>
         </header>
@@ -692,10 +714,15 @@
     <div class="modal" id="import-modal">
         <div class="modal-content">
             <h3>Import Test Data</h3>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">Load from file:</label>
+                <input type="file" id="import-file" accept=".json" onchange="importFromFile(this)" style="width: 100%;">
+            </div>
+            <div style="margin-bottom: 0.5rem;">Or paste JSON data:</div>
             <textarea id="import-data" placeholder="Paste JSON data here..."></textarea>
             <div class="modal-actions">
                 <button onclick="hideImportModal()">Cancel</button>
-                <button class="primary" onclick="importData()">Import</button>
+                <button class="primary" onclick="importData()">Import from Text</button>
             </div>
         </div>
     </div>
@@ -1391,32 +1418,157 @@
             results: {}  // { testId: [{ timestamp, status, values, notes }] }
         };
 
+        // File handle for direct file access (File System Access API)
+        let fileHandle = null;
+        let hasUnsavedChanges = false;
+        const DATA_FILE = 'test-data.json';
+
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
             renderTests();
             updateSummary();
+            updateSaveIndicator();
 
             // Set default date
             if (!document.getElementById('dut-date').value) {
                 document.getElementById('dut-date').value = new Date().toISOString().split('T')[0];
             }
+
+            // Warn before leaving with unsaved changes
+            window.addEventListener('beforeunload', (e) => {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
         });
 
-        function loadData() {
+        async function loadData() {
+            // Try to load from file first (if served via web server)
+            try {
+                const response = await fetch(DATA_FILE);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && (data.dutInfo || data.results)) {
+                        testData = data;
+                        applyLoadedData();
+                        console.log('Loaded data from', DATA_FILE);
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.log('Could not load from file, trying localStorage:', e.message);
+            }
+
+            // Fall back to localStorage
             const saved = localStorage.getItem('diffprobe-test-data');
             if (saved) {
                 testData = JSON.parse(saved);
-                document.getElementById('dut-serial').value = testData.dutInfo.serial || '';
-                document.getElementById('dut-tester').value = testData.dutInfo.tester || '';
-                document.getElementById('dut-date').value = testData.dutInfo.date || '';
-                document.getElementById('dut-revision').value = testData.dutInfo.revision || '';
+                applyLoadedData();
+                console.log('Loaded data from localStorage');
             }
         }
 
+        function applyLoadedData() {
+            document.getElementById('dut-serial').value = testData.dutInfo?.serial || '';
+            document.getElementById('dut-tester').value = testData.dutInfo?.tester || '';
+            document.getElementById('dut-date').value = testData.dutInfo?.date || '';
+            document.getElementById('dut-revision').value = testData.dutInfo?.revision || '';
+        }
+
         function saveData() {
+            // Always save to localStorage as backup
             localStorage.setItem('diffprobe-test-data', JSON.stringify(testData));
+            hasUnsavedChanges = true;
+            updateSaveIndicator();
             updateSummary();
+        }
+
+        function updateSaveIndicator() {
+            const indicator = document.getElementById('save-indicator');
+            if (indicator) {
+                indicator.textContent = hasUnsavedChanges ? '● Unsaved changes' : '✓ Saved';
+                indicator.className = 'save-indicator ' + (hasUnsavedChanges ? 'unsaved' : 'saved');
+            }
+        }
+
+        async function saveToFile() {
+            // Try File System Access API first (Chrome/Edge)
+            if ('showSaveFilePicker' in window) {
+                try {
+                    if (!fileHandle) {
+                        fileHandle = await window.showSaveFilePicker({
+                            suggestedName: DATA_FILE,
+                            types: [{
+                                description: 'JSON Files',
+                                accept: { 'application/json': ['.json'] }
+                            }]
+                        });
+                    }
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(JSON.stringify(testData, null, 2));
+                    await writable.close();
+                    hasUnsavedChanges = false;
+                    updateSaveIndicator();
+                    console.log('Saved to file via File System Access API');
+                    return;
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        console.error('File System Access API error:', e);
+                    }
+                }
+            }
+
+            // Fall back to download
+            downloadDataFile();
+        }
+
+        function downloadDataFile() {
+            const dataStr = JSON.stringify(testData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = DATA_FILE;
+            a.click();
+            URL.revokeObjectURL(url);
+            hasUnsavedChanges = false;
+            updateSaveIndicator();
+            alert('Data file downloaded. Move it to the docs/ folder to persist changes.');
+        }
+
+        async function loadFromFile() {
+            // Try File System Access API first
+            if ('showOpenFilePicker' in window) {
+                try {
+                    const [handle] = await window.showOpenFilePicker({
+                        types: [{
+                            description: 'JSON Files',
+                            accept: { 'application/json': ['.json'] }
+                        }]
+                    });
+                    fileHandle = handle;
+                    const file = await handle.getFile();
+                    const content = await file.text();
+                    testData = JSON.parse(content);
+                    applyLoadedData();
+                    saveData(); // Update localStorage
+                    hasUnsavedChanges = false;
+                    renderTests();
+                    updateSaveIndicator();
+                    console.log('Loaded from file via File System Access API');
+                    return;
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        console.error('File System Access API error:', e);
+                    }
+                    return;
+                }
+            }
+
+            // Fall back to file input
+            showImportModal();
         }
 
         function saveDutInfo() {
@@ -1970,13 +2122,34 @@
                 const dataStr = document.getElementById('import-data').value;
                 const imported = JSON.parse(dataStr);
                 testData = imported;
+                applyLoadedData();
                 saveData();
-                loadData();
                 renderTests();
                 hideImportModal();
-                alert('Data imported successfully!');
+                alert('Data imported successfully! Remember to click "Save Data" to persist to file.');
             } catch (e) {
                 alert('Invalid JSON data: ' + e.message);
+            }
+        }
+
+        function importFromFile(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        testData = imported;
+                        applyLoadedData();
+                        saveData();
+                        renderTests();
+                        hideImportModal();
+                        input.value = ''; // Reset file input
+                        alert('Data loaded from file! Remember to click "Save Data" to persist changes.');
+                    } catch (err) {
+                        alert('Invalid JSON file: ' + err.message);
+                    }
+                };
+                reader.readAsText(input.files[0]);
             }
         }
 
