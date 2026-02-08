@@ -1,0 +1,295 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700">
+  <defs>
+    <style>
+      .title { font: bold 14px sans-serif; fill: #333; }
+      .subtitle { font: 11px sans-serif; fill: #666; }
+      .axis-label { font: 10px sans-serif; fill: #333; }
+      .legend { font: 9px sans-serif; fill: #333; }
+      .grid { stroke: #ddd; stroke-width: 0.5; }
+      .axis { stroke: #333; stroke-width: 1; }
+      .annotation { font: 9px sans-serif; fill: #666; }
+      .warning { font: bold 10px sans-serif; fill: #c00; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="700" fill="#fafafa"/>
+
+  <!-- Main Title -->
+  <text x="450" y="25" text-anchor="middle" class="title" style="font-size:16px">Step Response Method for Probe Compensation</text>
+
+  <!-- TOP LEFT: Step Response of Compensated Divider -->
+  <g transform="translate(50,50)">
+    <text x="175" y="0" text-anchor="middle" class="title">Step Response of Compensated Divider</text>
+    <text x="175" y="15" text-anchor="middle" class="subtitle">(What you see on scope)</text>
+
+    <!-- Graph area -->
+    <rect x="40" y="30" width="270" height="180" fill="white" stroke="#ccc"/>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="40" y1="75" x2="310" y2="75"/>
+      <line x1="40" y1="120" x2="310" y2="120"/>
+      <line x1="40" y1="165" x2="310" y2="165"/>
+      <line x1="94" y1="30" x2="94" y2="210"/>
+      <line x1="148" y1="30" x2="148" y2="210"/>
+      <line x1="202" y1="30" x2="202" y2="210"/>
+      <line x1="256" y1="30" x2="256" y2="210"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="40" y1="210" x2="310" y2="210" class="axis"/>
+    <line x1="40" y1="30" x2="40" y2="210" class="axis"/>
+
+    <!-- Axis labels -->
+    <text x="175" y="235" text-anchor="middle" class="axis-label">Time (ns)</text>
+    <text x="15" y="120" text-anchor="middle" class="axis-label" transform="rotate(-90,15,120)">Normalized Output</text>
+
+    <!-- Axis ticks -->
+    <text x="40" y="225" text-anchor="middle" class="axis-label">0</text>
+    <text x="94" y="225" text-anchor="middle" class="axis-label">20</text>
+    <text x="148" y="225" text-anchor="middle" class="axis-label">40</text>
+    <text x="202" y="225" text-anchor="middle" class="axis-label">60</text>
+    <text x="256" y="225" text-anchor="middle" class="axis-label">80</text>
+    <text x="310" y="225" text-anchor="middle" class="axis-label">100</text>
+
+    <text x="35" y="213" text-anchor="end" class="axis-label">0.7</text>
+    <text x="35" y="168" text-anchor="end" class="axis-label">0.85</text>
+    <text x="35" y="123" text-anchor="end" class="axis-label">1.0</text>
+    <text x="35" y="78" text-anchor="end" class="axis-label">1.15</text>
+    <text x="35" y="33" text-anchor="end" class="axis-label">1.3</text>
+
+    <!-- Under-compensated (blue) - slow rise, rounded corner -->
+    <path d="M40,210 L50,210 Q55,210 60,200 Q80,150 100,130 Q140,122 180,121 L310,120"
+          fill="none" stroke="#0066cc" stroke-width="2"/>
+
+    <!-- Optimal (green) - sharp corner, flat top -->
+    <path d="M40,210 L50,210 L55,120 L310,120"
+          fill="none" stroke="#00aa00" stroke-width="2"/>
+
+    <!-- Over-compensated (red) - overshoot spike -->
+    <path d="M40,210 L50,210 L55,60 Q60,55 65,70 Q75,100 85,115 Q100,120 120,120 L310,120"
+          fill="none" stroke="#cc0000" stroke-width="2"/>
+
+    <!-- Legend -->
+    <rect x="180" y="40" width="120" height="55" fill="white" stroke="#ccc"/>
+    <line x1="185" y1="52" x2="205" y2="52" stroke="#0066cc" stroke-width="2"/>
+    <text x="210" y="55" class="legend">Under-comp (C1&lt;1.0pF)</text>
+    <line x1="185" y1="67" x2="205" y2="67" stroke="#00aa00" stroke-width="2"/>
+    <text x="210" y="70" class="legend">Optimal (C1=1.24pF)</text>
+    <line x1="185" y1="82" x2="205" y2="82" stroke="#cc0000" stroke-width="2"/>
+    <text x="210" y="85" class="legend">Over-comp (C1&gt;1.8pF)</text>
+
+    <!-- Annotations -->
+    <text x="70" y="145" class="annotation" fill="#0066cc">Slow rise,</text>
+    <text x="70" y="155" class="annotation" fill="#0066cc">rounded corner</text>
+    <text x="130" y="110" class="annotation" fill="#00aa00">Sharp corner, flat top</text>
+    <text x="70" y="50" class="annotation" fill="#cc0000">Overshoot</text>
+  </g>
+
+  <!-- TOP RIGHT: 10 MHz Square Wave -->
+  <g transform="translate(470,50)">
+    <text x="190" y="0" text-anchor="middle" class="title">10 MHz Square Wave Through Probe</text>
+    <text x="190" y="15" text-anchor="middle" class="subtitle">(Three compensation states shown)</text>
+
+    <!-- Graph area -->
+    <rect x="40" y="30" width="320" height="180" fill="white" stroke="#ccc"/>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="40" y1="75" x2="360" y2="75"/>
+      <line x1="40" y1="120" x2="360" y2="120"/>
+      <line x1="40" y1="165" x2="360" y2="165"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="40" y1="210" x2="360" y2="210" class="axis"/>
+    <line x1="40" y1="30" x2="40" y2="210" class="axis"/>
+
+    <text x="200" y="235" text-anchor="middle" class="axis-label">Time (ns)</text>
+    <text x="15" y="120" text-anchor="middle" class="axis-label" transform="rotate(-90,15,120)">Normalized Output</text>
+
+    <!-- 50ns period markers -->
+    <text x="40" y="225" text-anchor="middle" class="axis-label">0</text>
+    <text x="120" y="225" text-anchor="middle" class="axis-label">50</text>
+    <text x="200" y="225" text-anchor="middle" class="axis-label">100</text>
+    <text x="280" y="225" text-anchor="middle" class="axis-label">150</text>
+    <text x="360" y="225" text-anchor="middle" class="axis-label">200</text>
+
+    <!-- Ideal square wave (dashed gray) -->
+    <path d="M40,165 L40,75 L120,75 L120,165 L200,165 L200,75 L280,75 L280,165 L360,165"
+          fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4,2"/>
+
+    <!-- Under-compensated (blue) - rounded, doesn't reach full amplitude -->
+    <path d="M40,165 Q50,165 55,140 Q70,85 90,80 Q110,78 120,78 Q130,78 135,100 Q150,155 170,162 Q190,165 200,165 Q210,165 215,140 Q230,85 250,80 Q270,78 280,78 Q290,78 295,100 Q310,155 330,162 Q350,165 360,165"
+          fill="none" stroke="#0066cc" stroke-width="2"/>
+
+    <!-- Optimal (green) - clean square -->
+    <path d="M40,165 L45,75 L120,75 L125,165 L200,165 L205,75 L280,75 L285,165 L360,165"
+          fill="none" stroke="#00aa00" stroke-width="2"/>
+
+    <!-- Over-compensated (red) - overshoot spikes -->
+    <path d="M40,165 L45,55 Q50,50 55,65 Q65,75 80,75 L120,75 L125,185 Q130,190 135,175 Q145,165 160,165 L200,165 L205,55 Q210,50 215,65 Q225,75 240,75 L280,75 L285,185 Q290,190 295,175 Q305,165 320,165 L360,165"
+          fill="none" stroke="#cc0000" stroke-width="2"/>
+
+    <!-- Legend -->
+    <rect x="220" y="40" width="130" height="70" fill="white" stroke="#ccc"/>
+    <line x1="225" y1="52" x2="245" y2="52" stroke="#999" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="250" y="55" class="legend">Ideal output</text>
+    <line x1="225" y1="67" x2="245" y2="67" stroke="#0066cc" stroke-width="2"/>
+    <text x="250" y="70" class="legend">Under-comp</text>
+    <line x1="225" y1="82" x2="245" y2="82" stroke="#00aa00" stroke-width="2"/>
+    <text x="250" y="85" class="legend">Optimal</text>
+    <line x1="225" y1="97" x2="245" y2="97" stroke="#cc0000" stroke-width="2"/>
+    <text x="250" y="100" class="legend">Over-comp</text>
+
+    <!-- 50ns annotation -->
+    <line x1="40" y1="200" x2="120" y2="200" stroke="#666" stroke-width="1"/>
+    <line x1="40" y1="195" x2="40" y2="205" stroke="#666" stroke-width="1"/>
+    <line x1="120" y1="195" x2="120" y2="205" stroke="#666" stroke-width="1"/>
+    <text x="80" y="198" text-anchor="middle" class="annotation">50ns (half period)</text>
+  </g>
+
+  <!-- BOTTOM LEFT: Settling Time vs C1 -->
+  <g transform="translate(50,340)">
+    <text x="175" y="0" text-anchor="middle" class="title">Settling Time vs C1 Value</text>
+    <text x="175" y="15" text-anchor="middle" class="subtitle">(Must be &lt;50ns to see full settling at 10MHz)</text>
+
+    <!-- Graph area -->
+    <rect x="40" y="30" width="270" height="180" fill="white" stroke="#ccc"/>
+
+    <!-- Shaded region where settling is too slow -->
+    <rect x="40" y="30" width="60" height="90" fill="#ffeeee"/>
+    <rect x="230" y="30" width="80" height="90" fill="#ffeeee"/>
+
+    <!-- Good region -->
+    <rect x="100" y="120" width="130" height="90" fill="#eeffee"/>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="40" y1="75" x2="310" y2="75"/>
+      <line x1="40" y1="120" x2="310" y2="120"/>
+      <line x1="40" y1="165" x2="310" y2="165"/>
+    </g>
+
+    <!-- 50ns reference line -->
+    <line x1="40" y1="120" x2="310" y2="120" stroke="#cc0000" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="315" y="123" class="annotation" fill="#cc0000">50ns (10MHz limit)</text>
+
+    <!-- Axes -->
+    <line x1="40" y1="210" x2="310" y2="210" class="axis"/>
+    <line x1="40" y1="30" x2="40" y2="210" class="axis"/>
+
+    <text x="175" y="235" text-anchor="middle" class="axis-label">C1 Trimmer Value (pF)</text>
+    <text x="15" y="120" text-anchor="middle" class="axis-label" transform="rotate(-90,15,120)">Settling Time to 1% (ns)</text>
+
+    <!-- Axis ticks -->
+    <text x="40" y="225" text-anchor="middle" class="axis-label">0.5</text>
+    <text x="94" y="225" text-anchor="middle" class="axis-label">1.0</text>
+    <text x="148" y="225" text-anchor="middle" class="axis-label">1.5</text>
+    <text x="202" y="225" text-anchor="middle" class="axis-label">2.0</text>
+    <text x="256" y="225" text-anchor="middle" class="axis-label">2.5</text>
+
+    <text x="35" y="213" text-anchor="end" class="axis-label">0</text>
+    <text x="35" y="168" text-anchor="end" class="axis-label">25</text>
+    <text x="35" y="123" text-anchor="end" class="axis-label">50</text>
+    <text x="35" y="78" text-anchor="end" class="axis-label">75</text>
+    <text x="35" y="33" text-anchor="end" class="axis-label">100</text>
+
+    <!-- Settling time curve (U-shaped - minimum at optimal C1) -->
+    <path d="M40,45 Q60,60 80,90 Q100,150 120,175 Q135,185 148,185 Q160,185 175,175 Q200,150 230,90 Q260,55 310,40"
+          fill="none" stroke="#0066cc" stroke-width="2"/>
+
+    <!-- Optimal point marker -->
+    <circle cx="148" cy="185" r="5" fill="#00aa00"/>
+    <text x="148" y="200" text-anchor="middle" class="legend" fill="#00aa00">Optimal: 1.24pF</text>
+    <text x="148" y="212" text-anchor="middle" class="legend" fill="#00aa00">(~5ns settling)</text>
+
+    <!-- Annotations -->
+    <text x="60" y="55" class="annotation" fill="#cc0000">Under-comp:</text>
+    <text x="60" y="65" class="annotation" fill="#cc0000">slow settling</text>
+    <text x="250" y="55" class="annotation" fill="#cc0000">Over-comp:</text>
+    <text x="250" y="65" class="annotation" fill="#cc0000">ringing</text>
+  </g>
+
+  <!-- BOTTOM RIGHT: Scope Probe Loading -->
+  <g transform="translate(470,340)">
+    <text x="190" y="0" text-anchor="middle" class="title">Effect of Scope Probe Loading (15 pF)</text>
+    <text x="190" y="15" text-anchor="middle" class="warning">Tuning WITH probe gives wrong result for final use!</text>
+
+    <!-- Graph area (log scale) -->
+    <rect x="40" y="30" width="320" height="180" fill="white" stroke="#ccc"/>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="40" y1="75" x2="360" y2="75"/>
+      <line x1="40" y1="120" x2="360" y2="120"/>
+      <line x1="40" y1="165" x2="360" y2="165"/>
+      <line x1="120" y1="30" x2="120" y2="210"/>
+      <line x1="200" y1="30" x2="200" y2="210"/>
+      <line x1="280" y1="30" x2="280" y2="210"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="40" y1="210" x2="360" y2="210" class="axis"/>
+    <line x1="40" y1="30" x2="40" y2="210" class="axis"/>
+
+    <text x="200" y="235" text-anchor="middle" class="axis-label">Frequency (MHz)</text>
+    <text x="15" y="120" text-anchor="middle" class="axis-label" transform="rotate(-90,15,120)">Relative Gain (dB)</text>
+
+    <!-- Log scale frequency labels -->
+    <text x="40" y="225" text-anchor="middle" class="axis-label">0.1</text>
+    <text x="120" y="225" text-anchor="middle" class="axis-label">1</text>
+    <text x="200" y="225" text-anchor="middle" class="axis-label">10</text>
+    <text x="280" y="225" text-anchor="middle" class="axis-label">100</text>
+    <text x="360" y="225" text-anchor="middle" class="axis-label">1000</text>
+
+    <text x="35" y="213" text-anchor="end" class="axis-label">-6</text>
+    <text x="35" y="168" text-anchor="end" class="axis-label">-4</text>
+    <text x="35" y="123" text-anchor="end" class="axis-label">-2</text>
+    <text x="35" y="78" text-anchor="end" class="axis-label">0</text>
+    <text x="35" y="33" text-anchor="end" class="axis-label">+2</text>
+
+    <!-- 0dB reference -->
+    <line x1="40" y1="75" x2="360" y2="75" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+
+    <!-- Without scope probe (optimal - flat to 200MHz) -->
+    <path d="M40,75 L280,75 Q300,78 320,85 Q340,95 360,110"
+          fill="none" stroke="#00aa00" stroke-width="2"/>
+
+    <!-- With 15pF scope probe (C1 unchanged - over-compensated behavior) -->
+    <path d="M40,75 L100,74 Q150,70 180,65 Q220,55 250,50 Q290,60 320,80 Q340,100 360,130"
+          fill="none" stroke="#cc0000" stroke-width="2"/>
+
+    <!-- With scope probe, C1 readjusted -->
+    <path d="M40,75 L200,75 Q240,80 280,95 Q320,120 360,160"
+          fill="none" stroke="#ff9900" stroke-width="2" stroke-dasharray="5,3"/>
+
+    <!-- 10 MHz marker -->
+    <line x1="200" y1="30" x2="200" y2="210" stroke="#0066cc" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="200" y="25" text-anchor="middle" class="annotation" fill="#0066cc">10 MHz</text>
+
+    <!-- 200 MHz marker -->
+    <line x1="307" y1="30" x2="307" y2="210" stroke="#666" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="307" y="25" text-anchor="middle" class="annotation">200 MHz target</text>
+
+    <!-- Legend -->
+    <rect x="50" y="140" width="180" height="60" fill="white" stroke="#ccc"/>
+    <line x1="55" y1="155" x2="75" y2="155" stroke="#00aa00" stroke-width="2"/>
+    <text x="80" y="158" class="legend">Without scope probe (optimal)</text>
+    <line x1="55" y1="170" x2="75" y2="170" stroke="#cc0000" stroke-width="2"/>
+    <text x="80" y="173" class="legend">With 15pF probe (C1 unchanged)</text>
+    <line x1="55" y1="185" x2="75" y2="185" stroke="#ff9900" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="80" y="188" class="legend">With probe, C1 readjusted to 2.9pF</text>
+  </g>
+
+  <!-- Key Takeaways Box -->
+  <g transform="translate(50,580)">
+    <rect x="0" y="0" width="800" height="100" fill="#ffffee" stroke="#cc9900" rx="5"/>
+    <text x="400" y="20" text-anchor="middle" class="title" fill="#996600">Key Takeaways</text>
+    <text x="20" y="40" class="legend">1. Use a 1 MHz or 10 MHz square wave to tune the probe - look for sharp corners without overshoot</text>
+    <text x="20" y="55" class="legend">2. Optimal C1 value is approximately 1.24 pF (without scope probe loading)</text>
+    <text x="20" y="70" class="legend">3. Do NOT tune with the oscilloscope probe connected - it adds ~15pF capacitance and gives wrong results</text>
+    <text x="20" y="85" class="legend">4. For final verification, use the BNC output directly into scope's 50-ohm input, or add a series resistor to isolate probe capacitance</text>
+  </g>
+</svg>

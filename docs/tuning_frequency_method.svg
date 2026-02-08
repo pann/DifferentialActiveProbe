@@ -1,0 +1,287 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750">
+  <defs>
+    <style>
+      .title { font: bold 14px sans-serif; fill: #333; }
+      .subtitle { font: 11px sans-serif; fill: #666; }
+      .axis-label { font: 10px sans-serif; fill: #333; }
+      .legend { font: 9px sans-serif; fill: #333; }
+      .grid { stroke: #ddd; stroke-width: 0.5; }
+      .axis { stroke: #333; stroke-width: 1; }
+      .procedure { font: 10px sans-serif; fill: #333; }
+      .procedure-title { font: bold 11px sans-serif; fill: #0066cc; }
+      .critical { font: bold 10px sans-serif; fill: #cc0000; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="750" fill="#fafafa"/>
+
+  <!-- Main Title -->
+  <text x="500" y="25" text-anchor="middle" class="title" style="font-size:16px">Frequency Ratio Method for Probe Compensation</text>
+
+  <!-- TOP LEFT: Frequency Ratio Method -->
+  <g transform="translate(30,50)">
+    <text x="175" y="0" text-anchor="middle" class="title">Frequency Ratio Method</text>
+    <text x="175" y="15" text-anchor="middle" class="subtitle">Compare amplitude at different frequencies</text>
+
+    <!-- Graph area -->
+    <rect x="50" y="30" width="280" height="180" fill="white" stroke="#ccc"/>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="50" y1="75" x2="330" y2="75"/>
+      <line x1="50" y1="120" x2="330" y2="120"/>
+      <line x1="50" y1="165" x2="330" y2="165"/>
+      <line x1="120" y1="30" x2="120" y2="210"/>
+      <line x1="190" y1="30" x2="190" y2="210"/>
+      <line x1="260" y1="30" x2="260" y2="210"/>
+    </g>
+
+    <!-- ±0.5dB acceptable region -->
+    <rect x="50" y="105" width="280" height="30" fill="#eeffee" opacity="0.5"/>
+
+    <!-- Axes -->
+    <line x1="50" y1="210" x2="330" y2="210" class="axis"/>
+    <line x1="50" y1="30" x2="50" y2="210" class="axis"/>
+
+    <text x="190" y="235" text-anchor="middle" class="axis-label">C1 Trimmer Value (pF)</text>
+    <text x="20" y="120" text-anchor="middle" class="axis-label" transform="rotate(-90,20,120)">Amplitude Ratio (dB)</text>
+    <text x="335" y="120" text-anchor="start" class="axis-label">10MHz / 100kHz</text>
+
+    <!-- Axis ticks -->
+    <text x="50" y="225" text-anchor="middle" class="axis-label">0.5</text>
+    <text x="120" y="225" text-anchor="middle" class="axis-label">1.0</text>
+    <text x="190" y="225" text-anchor="middle" class="axis-label">1.5</text>
+    <text x="260" y="225" text-anchor="middle" class="axis-label">2.0</text>
+    <text x="330" y="225" text-anchor="middle" class="axis-label">2.5</text>
+
+    <text x="45" y="213" text-anchor="end" class="axis-label">-3</text>
+    <text x="45" y="168" text-anchor="end" class="axis-label">-2</text>
+    <text x="45" y="123" text-anchor="end" class="axis-label">0</text>
+    <text x="45" y="78" text-anchor="end" class="axis-label">+2</text>
+    <text x="45" y="33" text-anchor="end" class="axis-label">+4</text>
+
+    <!-- 0 dB reference (Perfect) -->
+    <line x1="50" y1="120" x2="330" y2="120" stroke="#00aa00" stroke-width="1" stroke-dasharray="5,3"/>
+    <text x="335" y="123" class="legend" fill="#00aa00">Perfect (0dB)</text>
+
+    <!-- 1 MHz / 100 kHz ratio curve -->
+    <path d="M50,165 Q100,145 150,130 Q190,120 230,115 Q280,108 330,100"
+          fill="none" stroke="#0066cc" stroke-width="2"/>
+
+    <!-- 10 MHz / 100 kHz ratio curve (steeper) -->
+    <path d="M50,195 Q100,160 150,130 Q190,115 230,95 Q280,70 330,45"
+          fill="none" stroke="#cc0000" stroke-width="2"/>
+
+    <!-- Optimal C1 marker -->
+    <circle cx="190" cy="120" r="5" fill="#00aa00"/>
+    <line x1="190" y1="30" x2="190" y2="210" stroke="#00aa00" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="190" y="25" text-anchor="middle" class="legend" fill="#00aa00">Optimal C1 (1.24pF)</text>
+
+    <!-- Legend -->
+    <rect x="60" y="40" width="130" height="45" fill="white" stroke="#ccc"/>
+    <line x1="65" y1="55" x2="85" y2="55" stroke="#0066cc" stroke-width="2"/>
+    <text x="90" y="58" class="legend">1 MHz / 100 kHz</text>
+    <line x1="65" y1="70" x2="85" y2="70" stroke="#cc0000" stroke-width="2"/>
+    <text x="90" y="73" class="legend">10 MHz / 100 kHz</text>
+    <text x="65" y="82" class="legend" fill="#00aa00">Green zone: ±0.5dB</text>
+  </g>
+
+  <!-- TOP RIGHT: Amplitude at Test Frequencies -->
+  <g transform="translate(400,50)">
+    <text x="150" y="0" text-anchor="middle" class="title">Amplitude at Test Frequencies</text>
+    <text x="150" y="15" text-anchor="middle" class="subtitle">(Each line is different C1 value)</text>
+
+    <!-- Graph area -->
+    <rect x="50" y="30" width="250" height="180" fill="white" stroke="#ccc"/>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="50" y1="75" x2="300" y2="75"/>
+      <line x1="50" y1="120" x2="300" y2="120"/>
+      <line x1="50" y1="165" x2="300" y2="165"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="50" y1="210" x2="300" y2="210" class="axis"/>
+    <line x1="50" y1="30" x2="50" y2="210" class="axis"/>
+
+    <text x="175" y="235" text-anchor="middle" class="axis-label">Frequency</text>
+    <text x="20" y="120" text-anchor="middle" class="axis-label" transform="rotate(-90,20,120)">Amplitude (dB)</text>
+
+    <!-- Frequency labels -->
+    <text x="90" y="225" text-anchor="middle" class="axis-label">100kHz</text>
+    <text x="175" y="225" text-anchor="middle" class="axis-label">1MHz</text>
+    <text x="260" y="225" text-anchor="middle" class="axis-label">10MHz</text>
+
+    <text x="45" y="213" text-anchor="end" class="axis-label">-2</text>
+    <text x="45" y="168" text-anchor="end" class="axis-label">-1</text>
+    <text x="45" y="123" text-anchor="end" class="axis-label">0</text>
+    <text x="45" y="78" text-anchor="end" class="axis-label">+1</text>
+    <text x="45" y="33" text-anchor="end" class="axis-label">+2</text>
+
+    <!-- Reference (0 dB) -->
+    <line x1="50" y1="120" x2="300" y2="120" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+
+    <!-- C1 = 0.8pF (under-comp) - drops at high freq -->
+    <circle cx="90" cy="120" r="3" fill="#0066cc"/>
+    <circle cx="175" cy="130" r="3" fill="#0066cc"/>
+    <circle cx="260" cy="160" r="3" fill="#0066cc"/>
+    <path d="M90,120 L175,130 L260,160" fill="none" stroke="#0066cc" stroke-width="1.5"/>
+
+    <!-- C1 = 1.0pF -->
+    <circle cx="90" cy="120" r="3" fill="#3399ff"/>
+    <circle cx="175" cy="122" r="3" fill="#3399ff"/>
+    <circle cx="260" cy="140" r="3" fill="#3399ff"/>
+    <path d="M90,120 L175,122 L260,140" fill="none" stroke="#3399ff" stroke-width="1.5"/>
+
+    <!-- C1 = 1.24pF (optimal) - flat -->
+    <circle cx="90" cy="120" r="4" fill="#00aa00"/>
+    <circle cx="175" cy="120" r="4" fill="#00aa00"/>
+    <circle cx="260" cy="120" r="4" fill="#00aa00"/>
+    <path d="M90,120 L175,120 L260,120" fill="none" stroke="#00aa00" stroke-width="2"/>
+
+    <!-- C1 = 1.5pF -->
+    <circle cx="90" cy="120" r="3" fill="#ff9900"/>
+    <circle cx="175" cy="115" r="3" fill="#ff9900"/>
+    <circle cx="260" cy="100" r="3" fill="#ff9900"/>
+    <path d="M90,120 L175,115 L260,100" fill="none" stroke="#ff9900" stroke-width="1.5"/>
+
+    <!-- C1 = 1.8pF (over-comp) - rises at high freq -->
+    <circle cx="90" cy="120" r="3" fill="#cc0000"/>
+    <circle cx="175" cy="110" r="3" fill="#cc0000"/>
+    <circle cx="260" cy="80" r="3" fill="#cc0000"/>
+    <path d="M90,120 L175,110 L260,80" fill="none" stroke="#cc0000" stroke-width="1.5"/>
+
+    <!-- Legend -->
+    <rect x="305" y="60" width="85" height="100" fill="white" stroke="#ccc"/>
+    <circle cx="315" cy="75" r="3" fill="#0066cc"/>
+    <text x="325" y="78" class="legend">C1=0.8pF</text>
+    <circle cx="315" cy="90" r="3" fill="#3399ff"/>
+    <text x="325" y="93" class="legend">C1=1.0pF</text>
+    <circle cx="315" cy="105" r="4" fill="#00aa00"/>
+    <text x="325" y="108" class="legend">C1=1.24pF</text>
+    <circle cx="315" cy="120" r="3" fill="#ff9900"/>
+    <text x="325" y="123" class="legend">C1=1.5pF</text>
+    <circle cx="315" cy="135" r="3" fill="#cc0000"/>
+    <text x="325" y="138" class="legend">C1=1.8pF</text>
+  </g>
+
+  <!-- BOTTOM LEFT: Measurement Uncertainty Impact -->
+  <g transform="translate(30,300)">
+    <text x="175" y="0" text-anchor="middle" class="title">Measurement Uncertainty Impact</text>
+    <text x="175" y="15" text-anchor="middle" class="subtitle">Can we detect mis-compensation?</text>
+
+    <!-- Graph area -->
+    <rect x="50" y="30" width="280" height="160" fill="white" stroke="#ccc"/>
+
+    <!-- Uncertainty band (±3% = ±0.26dB) -->
+    <rect x="50" y="75" width="280" height="30" fill="#ffff99" opacity="0.5"/>
+    <text x="335" y="93" class="legend">±3% measurement</text>
+    <text x="335" y="103" class="legend">uncertainty</text>
+
+    <!-- Grid -->
+    <g class="grid">
+      <line x1="50" y1="60" x2="330" y2="60"/>
+      <line x1="50" y1="90" x2="330" y2="90"/>
+      <line x1="50" y1="120" x2="330" y2="120"/>
+      <line x1="50" y1="150" x2="330" y2="150"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="50" y1="190" x2="330" y2="190" class="axis"/>
+    <line x1="50" y1="30" x2="50" y2="190" class="axis"/>
+
+    <text x="190" y="210" text-anchor="middle" class="axis-label">C1 Trimmer Value (pF)</text>
+    <text x="20" y="110" text-anchor="middle" class="axis-label" transform="rotate(-90,20,110)">10MHz/100kHz Ratio (dB)</text>
+
+    <!-- Axis ticks -->
+    <text x="50" y="225" text-anchor="middle" class="axis-label">0.8</text>
+    <text x="120" y="225" text-anchor="middle" class="axis-label">1.0</text>
+    <text x="190" y="225" text-anchor="middle" class="axis-label">1.2</text>
+    <text x="260" y="225" text-anchor="middle" class="axis-label">1.4</text>
+    <text x="330" y="225" text-anchor="middle" class="axis-label">1.6</text>
+
+    <text x="45" y="33" text-anchor="end" class="axis-label">+1.0</text>
+    <text x="45" y="63" text-anchor="end" class="axis-label">+0.5</text>
+    <text x="45" y="93" text-anchor="end" class="axis-label">0</text>
+    <text x="45" y="123" text-anchor="end" class="axis-label">-0.5</text>
+    <text x="45" y="153" text-anchor="end" class="axis-label">-1.0</text>
+    <text x="45" y="183" text-anchor="end" class="axis-label">-1.5</text>
+
+    <!-- Ratio curve (shows slope through optimal region) -->
+    <path d="M50,160 Q100,140 150,110 Q190,90 230,70 Q280,50 330,35"
+          fill="none" stroke="#0066cc" stroke-width="2"/>
+
+    <!-- Detectable region annotations -->
+    <rect x="55" y="115" width="60" height="25" fill="#ffeeee" opacity="0.7"/>
+    <text x="85" y="130" text-anchor="middle" class="legend" fill="#cc0000">Detectable</text>
+    <text x="85" y="140" text-anchor="middle" class="legend" fill="#cc0000">under-comp</text>
+
+    <rect x="245" y="50" width="60" height="25" fill="#ffeeee" opacity="0.7"/>
+    <text x="275" y="65" text-anchor="middle" class="legend" fill="#cc0000">Detectable</text>
+    <text x="275" y="75" text-anchor="middle" class="legend" fill="#cc0000">over-comp</text>
+
+    <!-- Optimal point -->
+    <circle cx="190" cy="90" r="5" fill="#00aa00"/>
+    <text x="190" y="175" text-anchor="middle" class="legend" fill="#00aa00">Optimal: ratio = 0dB</text>
+
+    <!-- Sensitivity annotation -->
+    <text x="60" y="45" class="legend">Slope ≈ 1dB per 0.3pF</text>
+    <text x="60" y="55" class="legend">→ Good sensitivity!</text>
+  </g>
+
+  <!-- RIGHT SIDE: Recommended Tuning Procedure -->
+  <g transform="translate(420,280)">
+    <rect x="0" y="0" width="560" height="450" fill="#f5f5ff" stroke="#0066cc" rx="5"/>
+    <text x="280" y="20" text-anchor="middle" class="title" fill="#0066cc">RECOMMENDED TUNING PROCEDURE</text>
+
+    <text x="15" y="45" class="procedure">Equipment: 10 MHz Function Generator, 200 MHz Scope (15pF probes)</text>
+    <text x="15" y="60" class="critical">CRITICAL: Do NOT tune while measuring with scope probe!</text>
+    <text x="15" y="73" class="procedure">The 15pF probe capacitance changes the optimal C1 value.</text>
+
+    <!-- Method A -->
+    <text x="15" y="95" class="procedure-title">METHOD A: Square Wave (Preferred)</text>
+    <text x="25" y="112" class="procedure">1. Set function generator to 1 MHz square wave, ~1V amplitude</text>
+    <text x="25" y="125" class="procedure">2. Connect probe inputs to signal (+) and ground (-)</text>
+    <text x="25" y="138" class="procedure">3. Monitor output at AD8130 output (TP3) using scope</text>
+    <text x="25" y="151" class="procedure">   • Or monitor final BNC output</text>
+    <text x="25" y="164" class="procedure">4. Set C2 to middle of range (~7 pF) - use non-metallic tool</text>
+    <text x="25" y="177" class="procedure">5. Adjust C1 while watching waveform:</text>
+    <text x="35" y="190" class="procedure">   • Under-compensated: Rounded rising edge, slow response</text>
+    <text x="35" y="203" class="procedure">   • Over-compensated: Overshoot spike on rising edge</text>
+    <text x="35" y="216" class="procedure">   • Optimal: Sharp corner, flat top, no ringing</text>
+    <text x="25" y="229" class="procedure">6. Fine-tune at 10 MHz to verify</text>
+
+    <!-- Method B -->
+    <text x="15" y="255" class="procedure-title">METHOD B: Amplitude Comparison (Alternative)</text>
+    <text x="25" y="272" class="procedure">1. Set C2 to ~7 pF</text>
+    <text x="25" y="285" class="procedure">2. Measure amplitude at 100 kHz (reference)</text>
+    <text x="25" y="298" class="procedure">3. Measure amplitude at 10 MHz</text>
+    <text x="25" y="311" class="procedure">4. Adjust C1 until both amplitudes are equal (within 3%)</text>
+    <text x="25" y="324" class="procedure">5. The 10MHz/100kHz ratio should be 0 dB ± 0.3 dB</text>
+
+    <!-- Removing Scope Probe Effect -->
+    <text x="15" y="350" class="procedure-title">REMOVING SCOPE PROBE EFFECT</text>
+    <text x="25" y="367" class="procedure">Option 1: Use 10× scope probe (reduces loading to ~1.5pF)</text>
+    <text x="25" y="380" class="procedure">Option 2: Add 50Ω termination, measure with high-Z probe on terminator</text>
+    <text x="25" y="393" class="procedure">Option 3: Tune with probe, then reduce C1 by ~25% for final value</text>
+    <text x="25" y="406" class="procedure">           (Approximate correction for 15pF probe loading)</text>
+
+    <!-- Expected Values -->
+    <text x="15" y="430" class="procedure-title">EXPECTED VALUES</text>
+    <text x="25" y="445" class="procedure">C1 optimal: ~1.3 pF (without scope probe loading)</text>
+    <text x="25" y="458" class="procedure">C1 with 15pF scope probe: ~2.5 pF (don't use this for final!)</text>
+    <text x="25" y="471" class="procedure">C2 nominal: ~7 pF</text>
+  </g>
+
+  <!-- Verification Box -->
+  <g transform="translate(30,510)">
+    <rect x="0" y="0" width="360" height="90" fill="#eeffee" stroke="#00aa00" rx="5"/>
+    <text x="180" y="18" text-anchor="middle" class="procedure-title" fill="#00aa00">VERIFICATION WITHOUT HIGH-FREQUENCY SOURCE</text>
+    <text x="10" y="38" class="procedure">• Rise time at 1 MHz should be &lt; 5 ns for proper compensation</text>
+    <text x="10" y="53" class="procedure">• No overshoot or ringing on square wave edges</text>
+    <text x="10" y="68" class="procedure">• Amplitude at 10 MHz = Amplitude at 100 kHz (± 3%)</text>
+    <text x="10" y="83" class="procedure">• Square wave should look "crisp" with flat top</text>
+  </g>
+</svg>
