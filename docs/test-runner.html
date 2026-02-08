@@ -1099,26 +1099,35 @@
                     },
                     "C3": {
                         name: "Compensation Adjustment",
-                        objective: "Optimize frequency compensation trimmers",
+                        objective: "Optimize frequency compensation (C1/C3) and AC CMRR (C2/C4)",
                         setup: [
-                            "Apply 1kHz square wave, 1Vpp",
-                            "Monitor output on scope"
+                            "Apply 1MHz square wave, 1Vpp differential",
+                            "Monitor output on scope (use BNC output)",
+                            "Have non-metallic adjustment tool ready"
                         ],
                         procedure: [
-                            "Adjust C1 for flat top on square wave",
-                            "Adjust C2 for minimal overshoot",
-                            "Repeat for C5, C6 (negative channel)",
-                            "Iterate until optimal"
+                            "STEP 1 - Differential Response:",
+                            "1a. Set C2 to middle (~7pF), adjust C1 for flat square wave",
+                            "1b. Set C4 to middle (~7pF), adjust C3 for flat square wave",
+                            "1c. Verify 10MHz amplitude matches 100kHz (±5%)",
+                            "STEP 2 - AC CMRR Optimization:",
+                            "2a. Connect both inputs together (CM mode)",
+                            "2b. Apply 1MHz, 1Vpp sine wave",
+                            "2c. Adjust C2/C4 to minimize CM output (<15mV)",
+                            "2d. Re-verify differential response is still flat"
                         ],
                         criteria: [
-                            { param: "Square wave quality", min: "", typ: "Flat top", max: "" }
+                            { param: "Square wave", min: "", typ: "Flat top, no overshoot", max: "" },
+                            { param: "CM output @ 1MHz", min: "", typ: "", max: "15mV" }
                         ],
                         fields: [
                             { id: "c1_setting", label: "C1 Setting (turns)", type: "text" },
                             { id: "c2_setting", label: "C2 Setting (turns)", type: "text" },
-                            { id: "c5_setting", label: "C5 Setting (turns)", type: "text" },
-                            { id: "c6_setting", label: "C6 Setting (turns)", type: "text" },
-                            { id: "quality", label: "Final Quality", type: "select", options: ["Excellent", "Good", "Needs work"] }
+                            { id: "c3_setting", label: "C3 Setting (turns)", type: "text" },
+                            { id: "c4_setting", label: "C4 Setting (turns)", type: "text" },
+                            { id: "diff_quality", label: "Differential Quality", type: "select", options: ["Excellent", "Good", "Needs work"] },
+                            { id: "cm_output", label: "CM Output @ 1MHz (mV)", type: "number", step: "0.1" },
+                            { id: "final_check", label: "Diff still flat after CM trim?", type: "select", options: ["Yes", "No - iterate"] }
                         ]
                     },
                     "C4": {
@@ -1211,21 +1220,26 @@
                 name: "Common Mode Rejection",
                 tests: {
                     "D1": {
-                        name: "CMRR at DC",
-                        objective: "Measure common mode rejection at DC",
+                        name: "CMRR at DC (Resistor Matching)",
+                        objective: "Measure DC common mode rejection - depends on resistor matching only (NOT adjustable with trimmers)",
                         setup: [
-                            "Connect both inputs together",
-                            "Apply common mode voltage"
+                            "Connect both inputs together (INPUT_POS = INPUT_NEG)",
+                            "Apply common mode DC voltage",
+                            "Use high-resolution DMM to measure output"
                         ],
                         procedure: [
+                            "Apply +2V CM, measure output",
                             "Apply +5V CM, measure output",
                             "Apply -5V CM, measure output",
-                            "Calculate CMRR = 20×log10(Vcm/Vout)"
+                            "Calculate CMRR = 20×log10(Vcm/Vout)",
+                            "NOTE: DC CMRR depends on resistor matching - cannot be trimmed!"
                         ],
                         criteria: [
-                            { param: "CMRR @ DC", min: "60 dB", typ: "", max: "" }
+                            { param: "CMRR @ DC", min: "60 dB", typ: "", max: "" },
+                            { param: "DC Output (5V CM)", min: "", typ: "", max: "5mV" }
                         ],
                         fields: [
+                            { id: "out_pos2", label: "Output @ +2V CM (mV)", type: "number", step: "0.01" },
                             { id: "out_pos5", label: "Output @ +5V CM (mV)", type: "number", step: "0.01" },
                             { id: "out_neg5", label: "Output @ -5V CM (mV)", type: "number", step: "0.01" },
                             { id: "cmrr", label: "CMRR (dB)", type: "number", step: "0.1" }
@@ -1252,23 +1266,33 @@
                         ]
                     },
                     "D3": {
-                        name: "CMRR at 1MHz",
-                        objective: "Measure CMRR at high frequency",
+                        name: "CMRR at 1MHz (Adjustable with C2/C4)",
+                        objective: "Measure and optimize high-frequency CMRR using C2/C4 trimmers",
                         setup: [
                             "Connect both inputs together",
-                            "Apply 5Vpp 1MHz sine wave"
+                            "Apply 1Vpp 1MHz sine wave (common mode)",
+                            "Monitor output on scope"
                         ],
                         procedure: [
-                            "Measure output amplitude",
-                            "Calculate CMRR"
+                            "Measure output amplitude (before adjustment)",
+                            "If CMRR < 60dB, adjust C2 slightly to minimize output",
+                            "Adjust C4 slightly to minimize output",
+                            "Re-check differential response is still flat",
+                            "Measure final output amplitude",
+                            "Calculate CMRR = 20×log10(Vcm/Vout)"
                         ],
                         criteria: [
-                            { param: "CMRR @ 1MHz", min: "60 dB", typ: "", max: "" }
+                            { param: "CMRR @ 1MHz", min: "60 dB", typ: "", max: "" },
+                            { param: "CM Output (1V in)", min: "", typ: "", max: "15mV" }
                         ],
                         fields: [
                             { id: "cm_input", label: "CM Input (Vpp)", type: "number", step: "0.1" },
-                            { id: "output", label: "Output (mVpp)", type: "number", step: "0.01" },
-                            { id: "cmrr", label: "CMRR (dB)", type: "number", step: "0.1" }
+                            { id: "output_before", label: "Output before trim (mVpp)", type: "number", step: "0.01" },
+                            { id: "output_after", label: "Output after trim (mVpp)", type: "number", step: "0.01" },
+                            { id: "c2_adjust", label: "C2 adjustment (turns)", type: "text" },
+                            { id: "c4_adjust", label: "C4 adjustment (turns)", type: "text" },
+                            { id: "cmrr", label: "Final CMRR (dB)", type: "number", step: "0.1" },
+                            { id: "diff_ok", label: "Diff response still flat?", type: "select", options: ["Yes", "No - re-iterate"] }
                         ]
                     },
                     "D4": {

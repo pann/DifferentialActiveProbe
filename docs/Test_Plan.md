@@ -584,15 +584,33 @@ Mark overshoot, settling here
 
 **Objective:** Optimize frequency compensation trimmers
 
-**Setup:**
-1. Apply 1kHz square wave, 1Vpp
-2. Monitor output on scope
+**Trimmer Functions:**
+| Trimmer | Function | Adjustment Effect |
+|---------|----------|-------------------|
+| C1 | Input compensation (+) | Primary tuning for + channel frequency response |
+| C2 | Bandwidth comp (+) | Sets bandwidth, also used for AC CMRR |
+| C3 | Input compensation (-) | Primary tuning for - channel frequency response |
+| C4 | Bandwidth comp (-) | Sets bandwidth, also used for AC CMRR |
 
-**Procedure:**
-1. Adjust C1 (input comp +) for flat top on square wave
-2. Adjust C2 (BW comp +) for minimal overshoot
-3. Repeat for C5, C6 (negative channel)
-4. Iterate until optimal
+**Compensation Relationship:** C2 = 9 × C1 (approximately, for R1=9MΩ, R2=1MΩ)
+
+**Setup:**
+1. Apply 1MHz square wave, 1Vpp differential
+2. Monitor output on scope (use BNC output to avoid probe loading)
+
+**Procedure - Step 1: Individual Channel Compensation**
+1. Set C2 to middle position (~7pF)
+2. Adjust C1 for flat top on square wave (no overshoot, no rounding)
+3. Repeat with C4 at middle, adjust C3 for negative channel
+4. Verify with 10MHz sine: amplitude should match 100kHz amplitude (±5%)
+
+**Procedure - Step 2: AC CMRR Optimization (after Step 1)**
+1. Connect both inputs together (common mode)
+2. Apply 1MHz, 1Vpp sine wave
+3. Adjust C2 slightly to minimize output
+4. Adjust C4 slightly to minimize output
+5. Re-verify differential response is still flat
+6. Target: <15mV output for 1V common-mode (60dB CMRR)
 
 **Compensation States:**
 ```
@@ -602,16 +620,24 @@ Under-compensated:    Over-compensated:     Correct:
   ╱                      │                   │
 ──╱                    ──┘                 ──┘
 (slow rise, rounded)   (overshoot)         (flat top)
+→ Increase C1           → Decrease C1       = CORRECT
 ```
 
 **Results:**
 ```
+Step 1 - Differential Response:
 C1 Setting: _______ (turns from min)
 C2 Setting: _______ (turns from min)
-C5 Setting: _______ (turns from min)
-C6 Setting: _______ (turns from min)
+C3 Setting: _______ (turns from min)
+C4 Setting: _______ (turns from min)
+Square wave quality: [ ] Excellent  [ ] Good  [ ] Needs work
 
-Final square wave quality: [ ] Excellent  [ ] Good  [ ] Needs work
+Step 2 - AC CMRR Optimization:
+CM output @ 1MHz before trim: _______ mVpp
+CM output @ 1MHz after trim:  _______ mVpp
+C2 final: _______ (turns)
+C4 final: _______ (turns)
+Differential response still flat: [ ] Yes  [ ] No (re-iterate)
 ```
 
 ---
@@ -740,19 +766,24 @@ Fundamental (1MHz): _______ dBV
 
 ## 6. Category D: Common Mode Rejection Tests
 
-### D1. CMRR at DC
+### D1. CMRR at DC (Resistor Matching Test)
 
 **Objective:** Measure common mode rejection at DC
 
+**Theory:** DC CMRR depends *entirely* on resistor matching (R1/R3 and R2/R4).
+Capacitors are open circuits at DC, so trimmers C1-C4 have NO effect on DC CMRR.
+Any DC output offset indicates resistor mismatch and cannot be trimmed out.
+
 **Setup:**
 1. Connect both inputs together (INPUT_POS = INPUT_NEG)
-2. Apply common mode voltage to both inputs
-3. Measure output (ideally 0V)
+2. Apply common mode DC voltage to both inputs
+3. Measure output with high-resolution DMM (ideally 0V)
 
 **Procedure:**
-1. Apply +5V common mode, measure output
-2. Apply -5V common mode, measure output
-3. Calculate CMRR: CMRR = 20 × log10(Vcm / Vout)
+1. Apply +2V common mode, measure output
+2. Apply +5V common mode, measure output
+3. Apply -5V common mode, measure output
+4. Calculate CMRR: CMRR = 20 × log10(Vcm / Vout)
 
 **Calculation:**
 ```
@@ -762,21 +793,29 @@ CMRR = 20 × log10(5000mV / Vout_mV) = _______ dB
 ```
 
 **Pass Criteria:**
-| Parameter | Min |
-|-----------|-----|
-| CMRR @ DC | 60 dB |
+| Parameter | Min | Notes |
+|-----------|-----|-------|
+| CMRR @ DC | 60 dB | Depends on 0.1% resistor matching |
+| DC Output | <5mV | For 5V common-mode input |
+
+**Note:** If DC CMRR fails, the resistor pairs (R1/R3, R2/R4) are mismatched.
+This requires replacing resistors - it cannot be adjusted with trimmers.
 
 **Results:**
 ```
++2V CM → Output: _______ mV  CMRR: _______ dB
 +5V CM → Output: _______ mV  CMRR: _______ dB
 -5V CM → Output: _______ mV  CMRR: _______ dB
 ```
 
 ---
 
-### D2. CMRR at 1kHz
+### D2. CMRR at 1kHz (Low Frequency AC)
 
 **Objective:** Measure CMRR at audio frequency
+
+**Theory:** At low AC frequencies, CMRR is primarily determined by resistor matching,
+similar to DC. Capacitor effects are minimal at 1kHz.
 
 **Setup:**
 1. Connect both inputs together
@@ -802,28 +841,45 @@ CMRR:     _______ dB
 
 ---
 
-### D3. CMRR at 1MHz
+### D3. CMRR at 1MHz (High Frequency AC - Adjustable)
 
-**Objective:** Measure CMRR at high frequency
+**Objective:** Measure CMRR at high frequency and optimize with trimmers
+
+**Theory:** At higher frequencies, capacitor matching becomes important.
+C2 and C4 (bandwidth compensation trimmers) can be adjusted to optimize
+AC CMRR by balancing the frequency response between + and - channels.
 
 **Setup:**
-1. Same as D2, but at 1MHz
+1. Connect both inputs together
+2. Apply 1Vpp 1MHz sine wave (common mode)
+3. Measure output amplitude
 
 **Procedure:**
-1. Apply 5Vpp 1MHz common mode signal
-2. Measure output amplitude
-3. Calculate CMRR
+1. Apply 1Vpp common mode signal at 1MHz
+2. Measure output (should be highly attenuated)
+3. If output is too high, adjust C2 and C4 to minimize output
+4. Re-check differential mode response after adjustment (ensure still flat)
+5. Calculate CMRR
+
+**Optimization (if CMRR < 60dB):**
+1. Slightly adjust C2, observe output change
+2. Slightly adjust C4, observe output change
+3. Find combination that minimizes common-mode output
+4. Verify differential response is still correct after adjustment
 
 **Pass Criteria:**
-| Parameter | Min |
-|-----------|-----|
-| CMRR @ 1MHz | 60 dB |
+| Parameter | Min | Notes |
+|-----------|-----|-------|
+| CMRR @ 1MHz | 60 dB | Can be optimized with C2/C4 |
+| CM Output | <15mV | For 1V common-mode input |
 
 **Results:**
 ```
-CM Input: 5Vpp @ 1MHz
-Output:   _______ mVpp
-CMRR:     _______ dB
+CM Input: 1Vpp @ 1MHz
+Output (before trim): _______ mVpp  CMRR: _______ dB
+Output (after trim):  _______ mVpp  CMRR: _______ dB
+C2 adjustment: _______ (turns from initial)
+C4 adjustment: _______ (turns from initial)
 ```
 
 ---
