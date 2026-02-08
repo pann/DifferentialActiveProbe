@@ -1,0 +1,677 @@
+{
+  "A": {
+    "name": "Power Supply",
+    "tests": {
+      "A1": {
+        "name": "Power-On from 9V Battery",
+        "objective": "Verify probe powers on correctly from 9V battery",
+        "setup": [
+          "Connect fresh 9V alkaline battery",
+          "Connect DMM to +5V test point (TP_VCC)",
+          "Connect second DMM to -5V test point (TP_VEE)"
+        ],
+        "procedure": [
+          "Verify power LED is OFF with switch in OFF position",
+          "Move switch to ON position",
+          "Record +5V rail voltage",
+          "Record -5V rail voltage",
+          "Verify power LED illuminates GREEN"
+        ],
+        "criteria": [
+          { "param": "+5V Rail", "min": "4.95V", "typ": "5.00V", "max": "5.05V" },
+          { "param": "-5V Rail", "min": "-5.05V", "typ": "-5.00V", "max": "-4.95V" },
+          { "param": "Power LED", "min": "GREEN", "typ": "", "max": "" }
+        ],
+        "fields": [
+          { "id": "v_pos", "label": "+5V Rail (V)", "type": "number", "step": "0.001" },
+          { "id": "v_neg", "label": "-5V Rail (V)", "type": "number", "step": "0.001" },
+          { "id": "led_status", "label": "LED Status", "type": "select", "options": ["GREEN", "OFF", "Other"] }
+        ]
+      },
+      "A2": {
+        "name": "Power-On from LiPo Battery",
+        "objective": "Verify probe powers on correctly from LiPo battery (no 9V)",
+        "setup": [
+          "Disconnect 9V battery",
+          "Connect charged LiPo battery",
+          "Connect DMMs to +/-5V test points"
+        ],
+        "procedure": [
+          "Measure initial LiPo voltage",
+          "Move switch to ON position",
+          "Record +5V and -5V rail voltages",
+          "Verify power LED illuminates"
+        ],
+        "criteria": [
+          { "param": "+5V Rail", "min": "4.90V", "typ": "5.00V", "max": "5.05V" },
+          { "param": "-5V Rail", "min": "-5.05V", "typ": "-5.00V", "max": "-4.90V" }
+        ],
+        "fields": [
+          { "id": "lipo_v", "label": "LiPo Voltage (V)", "type": "number", "step": "0.01" },
+          { "id": "v_pos", "label": "+5V Rail (V)", "type": "number", "step": "0.001" },
+          { "id": "v_neg", "label": "-5V Rail (V)", "type": "number", "step": "0.001" }
+        ]
+      },
+      "A3": {
+        "name": "Power Supply Noise",
+        "objective": "Verify ultra-low noise on power rails",
+        "setup": [
+          "Power probe from 9V battery",
+          "Set oscilloscope: AC coupling, 20MHz BW limit, 1mV/div",
+          "Connect scope probe to +5V test point (short ground lead)"
+        ],
+        "procedure": [
+          "Measure +5V rail noise (peak-to-peak)",
+          "Repeat for -5V rail",
+          "Note any switching frequency components"
+        ],
+        "criteria": [
+          { "param": "+5V Noise (p-p)", "min": "", "typ": "", "max": "10mV" },
+          { "param": "-5V Noise (p-p)", "min": "", "typ": "", "max": "10mV" }
+        ],
+        "fields": [
+          { "id": "noise_pos", "label": "+5V Noise (mV p-p)", "type": "number", "step": "0.1" },
+          { "id": "noise_neg", "label": "-5V Noise (mV p-p)", "type": "number", "step": "0.1" },
+          { "id": "freq_note", "label": "Dominant Frequency", "type": "text" }
+        ]
+      },
+      "A4": {
+        "name": "Supply Current",
+        "objective": "Verify quiescent and operating current draw",
+        "setup": [
+          "Insert DMM (mA range) in series with 9V battery",
+          "No input signal applied to probe"
+        ],
+        "procedure": [
+          "Record quiescent current (no signal, no load)",
+          "Apply 1Vpp 1kHz differential signal, record current",
+          "Calculate power consumption"
+        ],
+        "criteria": [
+          { "param": "Quiescent Current", "min": "", "typ": "15mA", "max": "30mA" },
+          { "param": "Operating Current", "min": "", "typ": "20mA", "max": "50mA" }
+        ],
+        "fields": [
+          { "id": "i_quiescent", "label": "Quiescent (mA)", "type": "number", "step": "0.1" },
+          { "id": "i_operating", "label": "Operating (mA)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "A5": {
+        "name": "LiPo Charging",
+        "objective": "Verify USB-C charging functionality",
+        "setup": [
+          "Connect partially discharged LiPo (3.5-3.8V)",
+          "Connect USB-C 5V power source",
+          "Probe must be OFF"
+        ],
+        "procedure": [
+          "Record initial LiPo voltage",
+          "Connect USB-C power",
+          "Verify charging LED (RED)",
+          "Measure charge current if possible",
+          "Wait for complete, record final voltage"
+        ],
+        "criteria": [
+          { "param": "Charge Current", "min": "400mA", "typ": "500mA", "max": "550mA" },
+          { "param": "Final Voltage", "min": "4.15V", "typ": "4.20V", "max": "4.25V" }
+        ],
+        "fields": [
+          { "id": "v_initial", "label": "Initial LiPo (V)", "type": "number", "step": "0.01" },
+          { "id": "i_charge", "label": "Charge Current (mA)", "type": "number", "step": "1" },
+          { "id": "v_final", "label": "Final LiPo (V)", "type": "number", "step": "0.01" },
+          { "id": "charge_time", "label": "Charge Time (min)", "type": "number", "step": "1" }
+        ]
+      },
+      "A6": {
+        "name": "Battery Switchover",
+        "objective": "Verify automatic switching between 9V and LiPo",
+        "setup": [
+          "Connect both 9V battery and charged LiPo",
+          "Monitor +5V rail with DMM",
+          "Power ON the probe"
+        ],
+        "procedure": [
+          "Record +5V with both batteries",
+          "Disconnect 9V while monitoring",
+          "Verify no dropout",
+          "Reconnect 9V, verify smooth transition"
+        ],
+        "criteria": [
+          { "param": "Switchover", "min": "", "typ": "No dropout", "max": "" },
+          { "param": "+5V stability", "min": "", "typ": "", "max": "±50mV" }
+        ],
+        "fields": [
+          { "id": "v_both", "label": "+5V Both Batteries (V)", "type": "number", "step": "0.001" },
+          { "id": "v_lipo_only", "label": "+5V LiPo Only (V)", "type": "number", "step": "0.001" },
+          { "id": "glitch", "label": "Glitch Observed", "type": "select", "options": ["None", "Minor", "Significant"] }
+        ]
+      },
+      "A7": {
+        "name": "Low Battery Operation",
+        "objective": "Verify operation down to minimum LiPo voltage",
+        "setup": [
+          "Use adjustable supply to simulate LiPo",
+          "Monitor +5V rail and input voltage"
+        ],
+        "procedure": [
+          "Starting from 4.2V, reduce in 0.1V steps",
+          "Record +5V at each step",
+          "Continue until shutdown or out of spec",
+          "Record cutoff voltage"
+        ],
+        "criteria": [
+          { "param": "+5V @ 3.7V input", "min": "4.95V", "typ": "5.00V", "max": "5.05V" },
+          { "param": "+5V @ 3.3V input", "min": "4.90V", "typ": "", "max": "5.05V" }
+        ],
+        "fields": [
+          { "id": "v5_at_42", "label": "+5V @ 4.2V in", "type": "number", "step": "0.001" },
+          { "id": "v5_at_37", "label": "+5V @ 3.7V in", "type": "number", "step": "0.001" },
+          { "id": "v5_at_33", "label": "+5V @ 3.3V in", "type": "number", "step": "0.001" },
+          { "id": "cutoff_v", "label": "Cutoff Voltage (V)", "type": "number", "step": "0.01" }
+        ]
+      },
+      "A8": {
+        "name": "9V Battery Range",
+        "objective": "Verify operation across 9V battery voltage range",
+        "setup": [
+          "Use adjustable power supply instead of 9V battery",
+          "Monitor +5V rail"
+        ],
+        "procedure": [
+          "Set supply to 9.0V, record +5V",
+          "Reduce to 7.5V (depleted), record +5V",
+          "Reduce to 6.0V (minimum), record +5V",
+          "Increase to 9.5V, verify no damage"
+        ],
+        "criteria": [
+          { "param": "+5V @ 9.0V in", "min": "4.95V", "typ": "5.00V", "max": "5.05V" },
+          { "param": "+5V @ 6.0V in", "min": "4.90V", "typ": "", "max": "5.05V" }
+        ],
+        "fields": [
+          { "id": "v5_at_90", "label": "+5V @ 9.0V in", "type": "number", "step": "0.001" },
+          { "id": "v5_at_75", "label": "+5V @ 7.5V in", "type": "number", "step": "0.001" },
+          { "id": "v5_at_60", "label": "+5V @ 6.0V in", "type": "number", "step": "0.001" }
+        ]
+      }
+    }
+  },
+  "B": {
+    "name": "DC Performance",
+    "tests": {
+      "B1": {
+        "name": "DC Attenuation Ratio",
+        "objective": "Verify 10:1 attenuation ratio at DC",
+        "setup": [
+          "Connect adjustable DC supply to probe inputs",
+          "Connect DMM #1 to measure input differential",
+          "Connect DMM #2 to probe output (BNC)"
+        ],
+        "procedure": [
+          "Apply +1.000V differential",
+          "Record output voltage",
+          "Repeat for +5V, +10V, -5V, -10V",
+          "Calculate attenuation ratio"
+        ],
+        "criteria": [
+          { "param": "Ratio @ 1V", "min": "9.9:1", "typ": "10.0:1", "max": "10.1:1" },
+          { "param": "Ratio @ 10V", "min": "9.9:1", "typ": "10.0:1", "max": "10.1:1" }
+        ],
+        "fields": [
+          { "id": "out_1v", "label": "Output @ 1V in (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_5v", "label": "Output @ 5V in (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_10v", "label": "Output @ 10V in (mV)", "type": "number", "step": "0.1" },
+          { "id": "ratio_avg", "label": "Average Ratio", "type": "number", "step": "0.01" }
+        ]
+      },
+      "B2": {
+        "name": "DC Offset",
+        "objective": "Measure DC offset with inputs shorted",
+        "setup": [
+          "Short both inputs to probe ground",
+          "Connect DMM to probe output"
+        ],
+        "procedure": [
+          "Allow probe to warm up 5 minutes",
+          "Record output DC voltage",
+          "Repeat after 15 minutes"
+        ],
+        "criteria": [
+          { "param": "DC Offset", "min": "", "typ": "0mV", "max": "±10mV" },
+          { "param": "Drift (15 min)", "min": "", "typ": "", "max": "±2mV" }
+        ],
+        "fields": [
+          { "id": "offset_5min", "label": "Offset @ 5min (mV)", "type": "number", "step": "0.1" },
+          { "id": "offset_15min", "label": "Offset @ 15min (mV)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "B3": {
+        "name": "Input Impedance",
+        "objective": "Verify 10MΩ input impedance",
+        "setup": [
+          "Connect 1MΩ precision resistor in series with INPUT_POS",
+          "Apply 10V DC through the resistor",
+          "Measure voltage at INPUT_POS"
+        ],
+        "procedure": [
+          "Without probe: measure voltage (should be 10V)",
+          "With probe: measure voltage at INPUT_POS",
+          "Calculate input impedance"
+        ],
+        "criteria": [
+          { "param": "Input Impedance", "min": "9MΩ", "typ": "10MΩ", "max": "11MΩ" }
+        ],
+        "fields": [
+          { "id": "v_measured", "label": "V at INPUT_POS (V)", "type": "number", "step": "0.001" },
+          { "id": "r_input", "label": "Calculated Rin (MΩ)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "B4": {
+        "name": "Maximum Input Voltage",
+        "objective": "Verify operation at maximum rated differential input",
+        "setup": [
+          "Use two power supplies to create ±25V (50V diff)",
+          "Connect through 100kΩ current-limiting resistors",
+          "Monitor output on scope"
+        ],
+        "procedure": [
+          "Slowly increase differential from 0 to ±25V",
+          "Verify output tracks correctly (±2.5V)",
+          "Verify no clipping or distortion",
+          "Verify probe survives"
+        ],
+        "criteria": [
+          { "param": "+50V input", "min": "", "typ": "+5V output", "max": "" },
+          { "param": "-50V input", "min": "", "typ": "-5V output", "max": "" }
+        ],
+        "fields": [
+          { "id": "out_pos50", "label": "Output @ +50V in (V)", "type": "number", "step": "0.01" },
+          { "id": "out_neg50", "label": "Output @ -50V in (V)", "type": "number", "step": "0.01" },
+          { "id": "clipping", "label": "Clipping", "type": "select", "options": ["None", "Minor", "Significant"] }
+        ]
+      },
+      "B5": {
+        "name": "Common Mode DC",
+        "objective": "Verify operation with common mode DC offset",
+        "setup": [
+          "Apply common mode voltage to both inputs",
+          "Apply small differential on top",
+          "Monitor output"
+        ],
+        "procedure": [
+          "Set CM to +5V, apply 1V differential",
+          "Verify output = 100mV (CM rejected)",
+          "Repeat for CM = -5V, 0V, +10V"
+        ],
+        "criteria": [
+          { "param": "Output @ CM=5V", "min": "95mV", "typ": "100mV", "max": "105mV" },
+          { "param": "Output @ CM=10V", "min": "95mV", "typ": "100mV", "max": "105mV" }
+        ],
+        "fields": [
+          { "id": "out_cm0", "label": "Output @ CM=0V (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_cm5", "label": "Output @ CM=5V (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_cm10", "label": "Output @ CM=10V (mV)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "B6": {
+        "name": "Channel Balance",
+        "objective": "Verify positive and negative channels are matched",
+        "setup": [
+          "Apply +5V to INPUT_POS only (NEG grounded)",
+          "Record output",
+          "Swap: apply +5V to INPUT_NEG only"
+        ],
+        "procedure": [
+          "INPUT_POS = +5V, INPUT_NEG = GND",
+          "Record output",
+          "INPUT_POS = GND, INPUT_NEG = +5V",
+          "Record output, calculate mismatch"
+        ],
+        "criteria": [
+          { "param": "Channel Mismatch", "min": "", "typ": "", "max": "1%" }
+        ],
+        "fields": [
+          { "id": "out_pos", "label": "Output +5V on POS (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_neg", "label": "Output +5V on NEG (mV)", "type": "number", "step": "0.1" },
+          { "id": "mismatch", "label": "Mismatch (%)", "type": "number", "step": "0.01" }
+        ]
+      }
+    }
+  },
+  "C": {
+    "name": "AC Performance",
+    "tests": {
+      "C1": {
+        "name": "Frequency Response",
+        "objective": "Verify flat frequency response (10Hz - 10MHz)",
+        "setup": [
+          "Connect function generator to probe inputs",
+          "Set generator to 1Vpp sine wave",
+          "Connect output to scope with 50Ω termination"
+        ],
+        "procedure": [
+          "Measure output amplitude at each frequency",
+          "Calculate gain relative to 1kHz reference",
+          "Plot frequency response"
+        ],
+        "criteria": [
+          { "param": "10Hz - 1MHz", "min": "", "typ": "", "max": "±0.5dB" },
+          { "param": "1MHz - 10MHz", "min": "", "typ": "", "max": "±1.0dB" }
+        ],
+        "fields": [
+          { "id": "out_1k", "label": "Output @ 1kHz (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_100k", "label": "Output @ 100kHz (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_1M", "label": "Output @ 1MHz (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_10M", "label": "Output @ 10MHz (mV)", "type": "number", "step": "0.1" },
+          { "id": "flatness", "label": "Flatness (dB)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "C2": {
+        "name": "Step Response",
+        "objective": "Verify transient response and compensation",
+        "setup": [
+          "Set function generator to 1kHz square wave, 1Vpp",
+          "View output on scope, 1µs/div"
+        ],
+        "procedure": [
+          "Observe rising edge response",
+          "Check for overshoot, ringing",
+          "Measure rise time (10%-90%)"
+        ],
+        "criteria": [
+          { "param": "Overshoot", "min": "", "typ": "", "max": "5%" },
+          { "param": "Rise time", "min": "", "typ": "", "max": "3.5ns" }
+        ],
+        "fields": [
+          { "id": "overshoot", "label": "Overshoot (%)", "type": "number", "step": "0.1" },
+          { "id": "undershoot", "label": "Undershoot (%)", "type": "number", "step": "0.1" },
+          { "id": "rise_time", "label": "Rise Time (ns)", "type": "number", "step": "0.1" },
+          { "id": "ringing", "label": "Ringing", "type": "select", "options": ["None", "Minor", "Significant"] }
+        ]
+      },
+      "C3": {
+        "name": "Compensation Adjustment",
+        "objective": "Optimize frequency compensation (C1/C3) and AC CMRR (C2/C4)",
+        "setup": [
+          "Apply 1MHz square wave, 1Vpp differential",
+          "Monitor output on scope (use BNC output)",
+          "Have non-metallic adjustment tool ready"
+        ],
+        "procedure": [
+          "STEP 1 - Differential Response:",
+          "1a. Set C2 to middle (~7pF), adjust C1 for flat square wave",
+          "1b. Set C4 to middle (~7pF), adjust C3 for flat square wave",
+          "1c. Verify 10MHz amplitude matches 100kHz (±5%)",
+          "STEP 2 - AC CMRR Optimization:",
+          "2a. Connect both inputs together (CM mode)",
+          "2b. Apply 1MHz, 1Vpp sine wave",
+          "2c. Adjust C2/C4 to minimize CM output (<15mV)",
+          "2d. Re-verify differential response is still flat"
+        ],
+        "criteria": [
+          { "param": "Square wave", "min": "", "typ": "Flat top, no overshoot", "max": "" },
+          { "param": "CM output @ 1MHz", "min": "", "typ": "", "max": "15mV" }
+        ],
+        "fields": [
+          { "id": "c1_setting", "label": "C1 Setting (turns)", "type": "text" },
+          { "id": "c2_setting", "label": "C2 Setting (turns)", "type": "text" },
+          { "id": "c3_setting", "label": "C3 Setting (turns)", "type": "text" },
+          { "id": "c4_setting", "label": "C4 Setting (turns)", "type": "text" },
+          { "id": "diff_quality", "label": "Differential Quality", "type": "select", "options": ["Excellent", "Good", "Needs work"] },
+          { "id": "cm_output", "label": "CM Output @ 1MHz (mV)", "type": "number", "step": "0.1" },
+          { "id": "final_check", "label": "Diff still flat after CM trim?", "type": "select", "options": ["Yes", "No - iterate"] }
+        ]
+      },
+      "C4": {
+        "name": "Phase Response",
+        "objective": "Verify minimal phase shift",
+        "setup": [
+          "Split generator output to scope CH1 and probe",
+          "Probe output to CH2",
+          "Measure phase difference"
+        ],
+        "procedure": [
+          "Measure phase at 1kHz, 100kHz, 1MHz, 10MHz"
+        ],
+        "criteria": [
+          { "param": "Phase @ 1kHz", "min": "", "typ": "", "max": "±2°" },
+          { "param": "Phase @ 10MHz", "min": "", "typ": "", "max": "±30°" }
+        ],
+        "fields": [
+          { "id": "phase_1k", "label": "Phase @ 1kHz (°)", "type": "number", "step": "0.1" },
+          { "id": "phase_100k", "label": "Phase @ 100kHz (°)", "type": "number", "step": "0.1" },
+          { "id": "phase_1M", "label": "Phase @ 1MHz (°)", "type": "number", "step": "0.1" },
+          { "id": "phase_10M", "label": "Phase @ 10MHz (°)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "C5": {
+        "name": "Slew Rate",
+        "objective": "Measure maximum slew rate",
+        "setup": [
+          "Apply fast edge signal",
+          "Use maximum input amplitude (10V diff)"
+        ],
+        "procedure": [
+          "Measure output rise time for large signal",
+          "Calculate slew rate: SR = ΔV / Δt"
+        ],
+        "criteria": [
+          { "param": "Slew Rate", "min": "100 V/µs", "typ": "", "max": "" }
+        ],
+        "fields": [
+          { "id": "delta_v", "label": "ΔV (V)", "type": "number", "step": "0.01" },
+          { "id": "delta_t", "label": "Δt (ns)", "type": "number", "step": "0.1" },
+          { "id": "slew_rate", "label": "Slew Rate (V/µs)", "type": "number", "step": "1" }
+        ]
+      },
+      "C6": {
+        "name": "Output Drive",
+        "objective": "Verify probe can drive 50Ω load",
+        "setup": [
+          "Connect probe output to 50Ω termination",
+          "Apply 2Vpp differential input"
+        ],
+        "procedure": [
+          "Measure output with 50Ω load",
+          "Measure output with 1MΩ load (high-Z)",
+          "Calculate output impedance"
+        ],
+        "criteria": [
+          { "param": "50Ω load output", "min": "90%", "typ": "", "max": "" }
+        ],
+        "fields": [
+          { "id": "out_1M", "label": "Output @ 1MΩ (mV)", "type": "number", "step": "0.1" },
+          { "id": "out_50", "label": "Output @ 50Ω (mV)", "type": "number", "step": "0.1" },
+          { "id": "z_out", "label": "Calculated Zout (Ω)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "C7": {
+        "name": "Harmonic Distortion",
+        "objective": "Verify low distortion at 1MHz",
+        "setup": [
+          "Apply 1MHz sine wave, 2Vpp differential",
+          "View output on scope in FFT mode"
+        ],
+        "procedure": [
+          "Identify fundamental (1MHz)",
+          "Measure 2nd and 3rd harmonic levels"
+        ],
+        "criteria": [
+          { "param": "2nd Harmonic", "min": "", "typ": "", "max": "-50 dBc" },
+          { "param": "3rd Harmonic", "min": "", "typ": "", "max": "-50 dBc" }
+        ],
+        "fields": [
+          { "id": "fundamental", "label": "Fundamental (dBV)", "type": "number", "step": "0.1" },
+          { "id": "h2", "label": "2nd Harmonic (dBc)", "type": "number", "step": "0.1" },
+          { "id": "h3", "label": "3rd Harmonic (dBc)", "type": "number", "step": "0.1" }
+        ]
+      }
+    }
+  },
+  "D": {
+    "name": "Common Mode Rejection",
+    "tests": {
+      "D1": {
+        "name": "CMRR at DC (Resistor Matching)",
+        "objective": "Measure DC common mode rejection - depends on resistor matching only (NOT adjustable with trimmers)",
+        "setup": [
+          "Connect both inputs together (INPUT_POS = INPUT_NEG)",
+          "Apply common mode DC voltage",
+          "Use high-resolution DMM to measure output"
+        ],
+        "procedure": [
+          "Apply +2V CM, measure output",
+          "Apply +5V CM, measure output",
+          "Apply -5V CM, measure output",
+          "Calculate CMRR = 20×log10(Vcm/Vout)",
+          "NOTE: DC CMRR depends on resistor matching - cannot be trimmed!"
+        ],
+        "criteria": [
+          { "param": "CMRR @ DC", "min": "60 dB", "typ": "", "max": "" },
+          { "param": "DC Output (5V CM)", "min": "", "typ": "", "max": "5mV" }
+        ],
+        "fields": [
+          { "id": "out_pos2", "label": "Output @ +2V CM (mV)", "type": "number", "step": "0.01" },
+          { "id": "out_pos5", "label": "Output @ +5V CM (mV)", "type": "number", "step": "0.01" },
+          { "id": "out_neg5", "label": "Output @ -5V CM (mV)", "type": "number", "step": "0.01" },
+          { "id": "cmrr", "label": "CMRR (dB)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "D2": {
+        "name": "CMRR at 1kHz",
+        "objective": "Measure CMRR at audio frequency",
+        "setup": [
+          "Connect both inputs together",
+          "Apply 5Vpp 1kHz sine wave"
+        ],
+        "procedure": [
+          "Measure output amplitude",
+          "Calculate CMRR"
+        ],
+        "criteria": [
+          { "param": "CMRR @ 1kHz", "min": "70 dB", "typ": "", "max": "" }
+        ],
+        "fields": [
+          { "id": "cm_input", "label": "CM Input (Vpp)", "type": "number", "step": "0.1" },
+          { "id": "output", "label": "Output (mVpp)", "type": "number", "step": "0.01" },
+          { "id": "cmrr", "label": "CMRR (dB)", "type": "number", "step": "0.1" }
+        ]
+      },
+      "D3": {
+        "name": "CMRR at 1MHz (Adjustable with C2/C4)",
+        "objective": "Measure and optimize high-frequency CMRR using C2/C4 trimmers",
+        "setup": [
+          "Connect both inputs together",
+          "Apply 1Vpp 1MHz sine wave (common mode)",
+          "Monitor output on scope"
+        ],
+        "procedure": [
+          "Measure output amplitude (before adjustment)",
+          "If CMRR < 60dB, adjust C2 slightly to minimize output",
+          "Adjust C4 slightly to minimize output",
+          "Re-check differential response is still flat",
+          "Measure final output amplitude",
+          "Calculate CMRR = 20×log10(Vcm/Vout)"
+        ],
+        "criteria": [
+          { "param": "CMRR @ 1MHz", "min": "60 dB", "typ": "", "max": "" },
+          { "param": "CM Output (1V in)", "min": "", "typ": "", "max": "15mV" }
+        ],
+        "fields": [
+          { "id": "cm_input", "label": "CM Input (Vpp)", "type": "number", "step": "0.1" },
+          { "id": "output_before", "label": "Output before trim (mVpp)", "type": "number", "step": "0.01" },
+          { "id": "output_after", "label": "Output after trim (mVpp)", "type": "number", "step": "0.01" },
+          { "id": "c2_adjust", "label": "C2 adjustment (turns)", "type": "text" },
+          { "id": "c4_adjust", "label": "C4 adjustment (turns)", "type": "text" },
+          { "id": "cmrr", "label": "Final CMRR (dB)", "type": "number", "step": "0.1" },
+          { "id": "diff_ok", "label": "Diff response still flat?", "type": "select", "options": ["Yes", "No - re-iterate"] }
+        ]
+      },
+      "D4": {
+        "name": "CMRR at 10MHz",
+        "objective": "Measure CMRR at maximum generator frequency",
+        "setup": [
+          "Connect both inputs together",
+          "Apply 5Vpp 10MHz sine wave"
+        ],
+        "procedure": [
+          "Measure output amplitude",
+          "Calculate CMRR"
+        ],
+        "criteria": [
+          { "param": "CMRR @ 10MHz", "min": "50 dB", "typ": "", "max": "" }
+        ],
+        "fields": [
+          { "id": "cm_input", "label": "CM Input (Vpp)", "type": "number", "step": "0.1" },
+          { "id": "output", "label": "Output (mVpp)", "type": "number", "step": "0.01" },
+          { "id": "cmrr", "label": "CMRR (dB)", "type": "number", "step": "0.1" }
+        ]
+      }
+    }
+  },
+  "E": {
+    "name": "Input Protection",
+    "tests": {
+      "E1": {
+        "name": "TVS Clamping",
+        "objective": "Verify TVS diodes clamp overvoltage",
+        "setup": [
+          "Apply slowly increasing voltage through 10kΩ resistor",
+          "Monitor voltage at attenuator output"
+        ],
+        "procedure": [
+          "Increase input voltage slowly",
+          "Note voltage where clamping begins",
+          "Verify clamp voltage within spec"
+        ],
+        "criteria": [
+          { "param": "Clamp voltage", "min": "5.5V", "typ": "", "max": "6.5V" }
+        ],
+        "fields": [
+          { "id": "clamp_start", "label": "Clamping Starts (V input)", "type": "number", "step": "0.1" },
+          { "id": "clamp_v", "label": "Clamp Voltage (V)", "type": "number", "step": "0.01" }
+        ]
+      },
+      "E2": {
+        "name": "ESD Survival",
+        "objective": "Verify probe survives ESD events",
+        "setup": [
+          "Record initial DC attenuation ratio",
+          "Prepare ESD source"
+        ],
+        "procedure": [
+          "Apply ±2kV contact discharge",
+          "Verify probe functions",
+          "Re-measure attenuation"
+        ],
+        "criteria": [
+          { "param": "Post-ESD function", "min": "", "typ": "Normal", "max": "" },
+          { "param": "Attenuation change", "min": "", "typ": "", "max": "<0.5%" }
+        ],
+        "fields": [
+          { "id": "ratio_pre", "label": "Pre-ESD Ratio", "type": "number", "step": "0.01" },
+          { "id": "ratio_post", "label": "Post-ESD Ratio", "type": "number", "step": "0.01" },
+          { "id": "functional", "label": "Functional", "type": "select", "options": ["Yes", "No"] }
+        ]
+      },
+      "E3": {
+        "name": "Reverse Polarity",
+        "objective": "Verify probe survives reversed battery",
+        "setup": [
+          "Prepare reversed polarity battery connection"
+        ],
+        "procedure": [
+          "Briefly connect reversed battery (1 sec)",
+          "Disconnect immediately",
+          "Connect correctly, verify operation"
+        ],
+        "criteria": [
+          { "param": "Post-reverse function", "min": "", "typ": "Normal", "max": "" }
+        ],
+        "fields": [
+          { "id": "duration", "label": "Duration (sec)", "type": "number", "step": "0.1" },
+          { "id": "functional", "label": "Post-test Function", "type": "select", "options": ["Normal", "Damaged"] }
+        ]
+      }
+    }
+  }
+}

@@ -733,8 +733,12 @@
     </div>
 
     <script>
-        // Test definitions
-        const testDefinitions = {
+        // Test definitions - loaded from external file
+        let testDefinitions = {};
+        const DEFINITIONS_FILE = 'test-definitions.json';
+
+        // Placeholder that gets replaced once definitions load
+        const testDefinitionsPlaceholder = {
             "A": {
                 name: "Power Supply",
                 tests: {
@@ -1420,11 +1424,30 @@
 
         // File handle for direct file access (File System Access API)
         let fileHandle = null;
+        let fileHandleDefinitions = null;
         let hasUnsavedChanges = false;
         const DATA_FILE = 'test-data.json';
 
+        // Load test definitions from file
+        async function loadTestDefinitions() {
+            try {
+                const response = await fetch(DEFINITIONS_FILE);
+                if (response.ok) {
+                    testDefinitions = await response.json();
+                    console.log('Loaded test definitions from', DEFINITIONS_FILE);
+                    return true;
+                }
+            } catch (e) {
+                console.log('Could not load definitions from file, using embedded:', e.message);
+            }
+            // Fall back to embedded definitions
+            testDefinitions = testDefinitionsPlaceholder;
+            return false;
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
+            await loadTestDefinitions();
             await loadData();
             renderTests();
             updateSummary();
