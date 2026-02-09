@@ -565,18 +565,33 @@
 
         .criteria-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
+            align-items: center;
         }
 
-        .criteria-row input {
+        .criteria-row input,
+        .criteria-row select {
             padding: 0.4rem;
             background: var(--input-bg);
             border: 1px solid var(--bg-color);
             border-radius: 3px;
             color: var(--text);
             font-size: 0.8rem;
+        }
+
+        .criteria-row .numeric-fields {
+            display: contents;
+        }
+
+        .criteria-row .numeric-fields input {
+            transition: opacity 0.2s;
+        }
+
+        .criteria-row.passfail-mode .numeric-fields input {
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         .field-row {
@@ -975,7 +990,8 @@
 
             <div class="form-section">
                 <h4>Pass Criteria</h4>
-                <div class="criteria-row" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                <div class="criteria-row" id="criteria-header" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                    <span>Type</span>
                     <span>Parameter</span>
                     <span>Min</span>
                     <span>Typ</span>
@@ -2540,15 +2556,37 @@
             const list = document.getElementById('criteria-list');
             const idx = list.children.length;
             const item = document.createElement('div');
-            item.className = 'criteria-row';
+            // Determine if this is a pass/fail type (no numeric values)
+            const isPassFail = criterion.type === 'passfail' ||
+                (!criterion.min && !criterion.max && criterion.typ &&
+                 (criterion.typ.toLowerCase().includes('pass') ||
+                  criterion.typ.toLowerCase().includes('normal') ||
+                  criterion.typ.toLowerCase().includes('yes') ||
+                  criterion.typ.toLowerCase().includes('no ')));
+            item.className = 'criteria-row' + (isPassFail ? ' passfail-mode' : '');
             item.innerHTML = `
+                <select onchange="toggleCriteriaType(this)">
+                    <option value="numeric" ${!isPassFail ? 'selected' : ''}>Numeric</option>
+                    <option value="passfail" ${isPassFail ? 'selected' : ''}>Pass/Fail</option>
+                </select>
                 <input type="text" placeholder="Parameter" value="${escapeHtml(criterion.param || '')}">
-                <input type="text" placeholder="Min" value="${escapeHtml(criterion.min || '')}">
-                <input type="text" placeholder="Typ" value="${escapeHtml(criterion.typ || '')}">
-                <input type="text" placeholder="Max" value="${escapeHtml(criterion.max || '')}">
+                <span class="numeric-fields">
+                    <input type="text" placeholder="Min" value="${escapeHtml(criterion.min || '')}">
+                    <input type="text" placeholder="Typ" value="${escapeHtml(criterion.typ || '')}">
+                    <input type="text" placeholder="Max" value="${escapeHtml(criterion.max || '')}">
+                </span>
                 <button onclick="removeListItem(this)" style="padding: 0.25rem 0.5rem; background: var(--fail); border: none; color: white; border-radius: 3px; cursor: pointer;">×</button>
             `;
             list.appendChild(item);
+        }
+
+        function toggleCriteriaType(selectEl) {
+            const row = selectEl.closest('.criteria-row');
+            if (selectEl.value === 'passfail') {
+                row.classList.add('passfail-mode');
+            } else {
+                row.classList.remove('passfail-mode');
+            }
         }
 
         function addFieldItem(field = {}) {
@@ -2642,14 +2680,28 @@
             // Collect criteria
             const criteria = [];
             document.querySelectorAll('#criteria-list .criteria-row').forEach(row => {
+                const typeSelect = row.querySelector('select');
                 const inputs = row.querySelectorAll('input');
-                if (inputs[0].value.trim()) {
-                    criteria.push({
-                        param: inputs[0].value.trim(),
-                        min: inputs[1].value.trim(),
-                        typ: inputs[2].value.trim(),
-                        max: inputs[3].value.trim()
-                    });
+                const param = inputs[0].value.trim();
+                if (param) {
+                    if (typeSelect.value === 'passfail') {
+                        // Pass/Fail type - just parameter with empty min/max, typ shows expected
+                        criteria.push({
+                            param: param,
+                            min: '',
+                            typ: 'Pass',
+                            max: ''
+                        });
+                    } else {
+                        // Numeric type - parameter with min/typ/max
+                        const numericInputs = row.querySelectorAll('.numeric-fields input');
+                        criteria.push({
+                            param: param,
+                            min: numericInputs[0]?.value.trim() || '',
+                            typ: numericInputs[1]?.value.trim() || '',
+                            max: numericInputs[2]?.value.trim() || ''
+                        });
+                    }
                 }
             });
             if (criteria.length === 0) {
