@@ -565,20 +565,21 @@
 
         .criteria-row {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
-            gap: 0.5rem;
+            grid-template-columns: 80px 1fr 60px 60px 60px auto;
+            gap: 0.35rem;
             margin-bottom: 0.5rem;
             align-items: center;
         }
 
         .criteria-row input,
         .criteria-row select {
-            padding: 0.4rem;
+            padding: 0.3rem;
             background: var(--input-bg);
             border: 1px solid var(--bg-color);
             border-radius: 3px;
             color: var(--text);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            min-width: 0;
         }
 
         .criteria-row .numeric-fields {
@@ -596,19 +597,21 @@
 
         .field-row {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1fr auto;
-            gap: 0.5rem;
+            grid-template-columns: 80px 1fr 70px 80px auto;
+            gap: 0.35rem;
             margin-bottom: 0.5rem;
+            align-items: center;
         }
 
         .field-row input,
         .field-row select {
-            padding: 0.4rem;
+            padding: 0.3rem;
             background: var(--input-bg);
             border: 1px solid var(--bg-color);
             border-radius: 3px;
             color: var(--text);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            min-width: 0;
         }
 
         .add-test-form .form-actions {
@@ -1004,6 +1007,7 @@
 
             <div class="form-section">
                 <h4>Result Fields</h4>
+                <button class="add-list-item-btn" onclick="generateFieldsFromCriteria()" style="margin-bottom: 0.75rem; background: var(--highlight); border-style: solid;">Generate from Criteria</button>
                 <div class="field-row" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
                     <span>Field ID</span>
                     <span>Label</span>
@@ -2586,6 +2590,47 @@
                 row.classList.add('passfail-mode');
             } else {
                 row.classList.remove('passfail-mode');
+            }
+        }
+
+        function generateFieldsFromCriteria() {
+            const fieldsList = document.getElementById('fields-list');
+            fieldsList.innerHTML = ''; // Clear existing fields
+
+            document.querySelectorAll('#criteria-list .criteria-row').forEach((row, idx) => {
+                const typeSelect = row.querySelector('select');
+                const inputs = row.querySelectorAll('input');
+                const param = inputs[0].value.trim();
+
+                if (!param) return;
+
+                // Generate a field ID from the parameter name
+                const fieldId = param.toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '_')
+                    .replace(/^_+|_+$/g, '')
+                    .substring(0, 20);
+
+                if (typeSelect.value === 'passfail') {
+                    // Pass/Fail criterion -> select field with Pass/Fail options
+                    addFieldItem({
+                        id: fieldId,
+                        label: param,
+                        type: 'select',
+                        options: ['Pass', 'Fail']
+                    });
+                } else {
+                    // Numeric criterion -> number field
+                    addFieldItem({
+                        id: fieldId,
+                        label: param,
+                        type: 'number',
+                        step: '0.01'
+                    });
+                }
+            });
+
+            if (fieldsList.children.length === 0) {
+                alert('No criteria found. Add criteria first, then generate fields.');
             }
         }
 
