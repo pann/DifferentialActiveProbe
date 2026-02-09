@@ -881,7 +881,7 @@
                 <button onclick="saveToFile()" class="btn-primary">Save Data</button>
                 <button onclick="loadFromFile()">Load Data</button>
                 <span id="save-indicator" class="save-indicator saved">✓ Saved</span>
-                <button onclick="saveDefinitions()" id="save-defs-btn">Save Definitions</button>
+                <button onclick="linkDefinitionsFile()" id="link-defs-btn">Link Definitions File</button>
                 <button onclick="exportPDF()">Export PDF</button>
                 <button onclick="clearAllData()" style="background: var(--fail);">Clear All</button>
             </div>
@@ -1741,6 +1741,9 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
+            // Check if local save server is running
+            await checkLocalServer();
+
             await loadTestDefinitions();
             await loadData();
             renderTests();
@@ -2488,15 +2491,14 @@
         let hasDefinitionChanges = false;
 
         function updateDefinitionsButton() {
-            const btn = document.getElementById('save-defs-btn');
-            if (btn) {
-                if (hasDefinitionChanges) {
-                    btn.classList.add('has-changes');
-                    btn.textContent = 'Save Definitions*';
-                } else {
-                    btn.classList.remove('has-changes');
-                    btn.textContent = 'Save Definitions';
-                }
+            const btn = document.getElementById('link-defs-btn');
+            if (btn && hasDefinitionChanges && !fileHandleDefinitions) {
+                // Show warning if there are unsaved changes and no file linked
+                btn.classList.add('has-changes');
+                btn.textContent = 'Link File to Save!';
+            } else if (btn && fileHandleDefinitions) {
+                btn.classList.remove('has-changes');
+                // Keep the linked state from updateLinkButton
             }
         }
 
@@ -2831,21 +2833,107 @@
             }
         }
 
+        // Check if local save server is available
+        let useLocalServer = false;
+
+        async function checkLocalServer() {
+            try {
+                const response = await fetch('/save-definitions', { method: 'OPTIONS' });
+                useLocalServer = response.ok;
+            } catch (e) {
+                useLocalServer = false;
+            }
+            updateLinkButton();
+            return useLocalServer;
+        }
+
+        // Link to definitions file (one-time per session) - Chrome/Edge only
+        async function linkDefinitionsFile() {
+            // Check for local server first (works in all browsers)
+            if (useLocalServer) {
+                return true; // Already connected via server
+            }
+
+            if (!('showOpenFilePicker' in window)) {
+                alert('Auto-save requires either:\n\n1. Run save-server.py and open http://localhost:8080\n   (Works in Firefox and all browsers)\n\n2. Use Chrome/Edge browser\n   (File System Access API)');
+                return false;
+            }
+
+            try {
+                const [handle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'JSON Files',
+                        accept: { 'application/json': ['.json'] }
+                    }],
+                    multiple: false
+                });
+                fileHandleDefinitions = handle;
+                updateLinkButton();
+                console.log('Definitions file linked:', handle.name);
+                return true;
+            } catch (e) {
+                if (e.name !== 'AbortError') {
+                    console.error('Error linking file:', e);
+                }
+                return false;
+            }
+        }
+
+        function updateLinkButton() {
+            const btn = document.getElementById('link-defs-btn');
+            if (btn) {
+                if (useLocalServer) {
+                    btn.textContent = '✓ Server Connected';
+                    btn.style.background = 'var(--pass)';
+                    btn.style.color = '#000';
+                } else if (fileHandleDefinitions) {
+                    btn.textContent = '✓ File Linked';
+                    btn.style.background = 'var(--pass)';
+                    btn.style.color = '#000';
+                } else {
+                    btn.textContent = 'Link Definitions File';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }
+            }
+        }
+
         // Auto-save definitions (called when adding/deleting tests)
         async function saveDefinitionsAuto() {
-            // Try File System Access API first
-            if ('showSaveFilePicker' in window) {
+            // Try local server first (works in all browsers including Firefox)
+            if (useLocalServer) {
                 try {
-                    // Request file handle if we don't have one
-                    if (!fileHandleDefinitions) {
-                        fileHandleDefinitions = await window.showSaveFilePicker({
-                            suggestedName: DEFINITIONS_FILE,
-                            types: [{
-                                description: 'JSON Files',
-                                accept: { 'application/json': ['.json'] }
-                            }]
-                        });
+                    const response = await fetch('/save-definitions', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(testDefinitions, null, 2)
+                    });
+                    if (response.ok) {
+                        hasDefinitionChanges = false;
+                        updateDefinitionsButton();
+                        console.log('Test definitions saved via server');
+                        return true;
                     }
+                } catch (e) {
+                    console.error('Server save failed:', e);
+                    useLocalServer = false;
+                    updateLinkButton();
+                }
+            }
+
+            // Try File System Access API (Chrome/Edge)
+            if ('showOpenFilePicker' in window) {
+                // If not linked yet, prompt user to link first
+                if (!fileHandleDefinitions) {
+                    const linked = await linkDefinitionsFile();
+                    if (!linked) {
+                        hasDefinitionChanges = true;
+                        updateDefinitionsButton();
+                        return false;
+                    }
+                }
+
+                try {
                     const writable = await fileHandleDefinitions.createWritable();
                     await writable.write(JSON.stringify(testDefinitions, null, 2));
                     await writable.close();
@@ -2854,14 +2942,13 @@
                     console.log('Test definitions saved to file');
                     return true;
                 } catch (e) {
-                    if (e.name === 'AbortError') {
-                        // User cancelled - mark as unsaved
-                        hasDefinitionChanges = true;
-                        updateDefinitionsButton();
-                        alert('File save cancelled. Changes are unsaved - click "Save Definitions" to save later.');
-                        return false;
-                    }
-                    console.error('File System Access API error:', e);
+                    console.error('Error saving definitions:', e);
+                    fileHandleDefinitions = null;
+                    updateLinkButton();
+                    hasDefinitionChanges = true;
+                    updateDefinitionsButton();
+                    alert('Error saving file. Please link the definitions file again.');
+                    return false;
                 }
             }
 
@@ -2878,13 +2965,6 @@
             updateDefinitionsButton();
             alert('Test definitions file downloaded.\nMove it to the docs/ folder to replace the existing file.');
             return true;
-        }
-
-        // Manual save definitions (from button)
-        async function saveDefinitions() {
-            // Force re-request file handle
-            fileHandleDefinitions = null;
-            await saveDefinitionsAuto();
         }
     </script>
 </body>
